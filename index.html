@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Совет Первых Регионального отделения</title>
+    <style>
+        :root {
+            --primary: #D4002A; --primary-dark: #A8001E; --primary-light: #FF1F4B;
+            --white: #FFFFFF; --bg: #F4F5F9; --card-bg: #FFFFFF;
+            --text: #1A1A2E; --text-light: #555; --border: #E0E2EA;
+            --shadow: 0 4px 24px rgba(0,0,0,0.07); --radius: 16px;
+            --transition: 0.25s; --font: 'Segoe UI', 'Inter', sans-serif;
+            --header-text: #FFFFFF; --btn-primary-text: #FFFFFF;
+        }
+        body.theme-dark {
+            --bg: #1A1A2E; --card-bg: #2C2C3A; --text: #E0E0E0;
+            --text-light: #AAAAAA; --border: #444; --shadow: 0 4px 24px rgba(0,0,0,0.3);
+        }
+        body.primary-blue { --primary: #0039A6; --primary-dark: #002277; --primary-light: #1A5FDB; }
+        body.primary-red { --primary: #D4002A; --primary-dark: #A8001E; --primary-light: #FF1F4B; }
+        body.primary-white {
+            --primary: #FFFFFF; --primary-dark: #E0E0E0; --primary-light: #F5F5F5;
+            --header-text: #1A1A2E; --btn-primary-text: #1A1A2E; --white: #1A1A2E;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font); background: var(--bg); color: var(--text);
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; padding: 10px; transition: background-color 0.3s, color 0.3s;
+        }
+        .app-container {
+            width: 100%; max-width: 1300px; background: var(--card-bg);
+            border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+            display: flex; flex-direction: column; max-height: 95vh; overflow: hidden;
+        }
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--header-text); padding: 14px 20px;
+            display: flex; align-items: center; gap: 12px; flex-shrink: 0; flex-wrap: wrap;
+        }
+        .header-emblem { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+        .header-emblem img { width: 100%; height: 100%; object-fit: cover; }
+        .header-text { flex: 1; min-width: 180px; }
+        .header-title { font-size: 1.2rem; font-weight: 800; text-transform: uppercase; }
+        .header-subtitle { font-size: 0.7rem; opacity: 0.85; }
+        .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
+        .btn-icon { background: transparent; border: none; color: var(--header-text); font-size: 1.2rem; cursor: pointer; padding: 6px; border-radius: 50%; }
+        .btn-icon:hover { background: rgba(255,255,255,0.2); }
+        .btn-logout { background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.4); color: var(--header-text); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem; white-space: nowrap; }
+        .user-badge, .admin-badge { padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; white-space: nowrap; }
+        .user-badge { background: rgba(255,255,255,0.2); }
+        .admin-badge { background: #FFD700; color: #1A1A2E; }
+
+        .app-body { flex: 1; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 16px; }
+
+        /* Mobile-first: табы скрыты, виден select */
+        .tabs { display: none; gap: 6px; flex-wrap: wrap; border-bottom: 2px solid var(--border); }
+        .tab-select { display: block; width: 100%; padding: 12px; border-radius: 12px; border: 2px solid var(--border); font-family: var(--font); font-size: 1rem; background: var(--card-bg); color: var(--text); margin-bottom: 8px; }
+
+        .tab-btn {
+            padding: 10px 16px; border: none; background: transparent;
+            font-weight: 600; font-size: 0.85rem; cursor: pointer;
+            border-radius: 10px 10px 0 0; color: var(--text-light);
+        }
+        .tab-btn.active { background: var(--card-bg); color: var(--primary); border-bottom: 3px solid var(--primary); }
+
+        .card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+
+        /* Формы – в колонку по умолчанию */
+        .form-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; background: var(--bg); padding: 14px; border-radius: 12px; border: 1px dashed var(--border); margin-bottom: 12px; flex-direction: column; }
+        .form-group { display: flex; flex-direction: column; gap: 4px; flex: 1 1 100%; width: 100%; }
+        .form-group label { font-weight: 600; font-size: 0.7rem; text-transform: uppercase; color: var(--text-light); }
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 10px 14px; border: 2px solid var(--border); border-radius: 20px;
+            font-family: var(--font); font-size: 0.9rem; background: var(--card-bg); color: var(--text); width: 100%;
+        }
+        .password-toggle { position: absolute; right: 12px; top: 32px; background: none; border: none; cursor: pointer; font-size: 1.2rem; }
+        .btn { padding: 10px 18px; border-radius: 25px; font-weight: 700; cursor: pointer; border: none; font-family: var(--font); font-size: 0.9rem; white-space: nowrap; width: 100%; text-align: center; margin-top: 4px; }
+        .btn-primary { background: var(--primary); color: var(--btn-primary-text); }
+        .btn-danger { background: #FFEBEE; color: #C62828; border: 1px solid #FFCDD2; }
+        .btn-success { background: #4CAF50; color: #fff; }
+        .btn-warning { background: #FF9800; color: #fff; }
+
+        .table-wrapper { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+        thead { background: var(--bg); }
+
+        .grade-badge { padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; display: inline-block; min-width: 40px; text-align: center; }
+        .grade-4 { background: #00BCD4; color: #fff; } .grade-3 { background: #4CAF50; color: #fff; }
+        .grade-2 { background: #FFEB3B; color: #333; } .grade-1 { background: #FF9800; color: #fff; }
+        .grade-0 { background: #F44336; color: #fff; }
+        .low-avg { background: #ffdddd; }
+
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #1A1A2E; color: #fff; padding: 12px 20px; border-radius: 30px; z-index: 9999; opacity: 0; transform: translateY(20px); transition: 0.3s; font-size: 0.9rem; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.success { background: #2E7D32; } .toast.error { background: #C62828; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+        .modal-content { background: var(--card-bg); border-radius: 16px; padding: 20px; max-width: 400px; width: 90%; box-shadow: 0 8px 30px rgba(0,0,0,0.3); color: var(--text); }
+
+        .sub-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+        .sub-tab-btn {
+            padding: 8px 16px; border: none; background: var(--bg);
+            font-weight: 600; font-size: 0.8rem; cursor: pointer; border-radius: 20px;
+            color: var(--text-light);
+        }
+        .sub-tab-btn.active { background: var(--primary); color: #fff; }
+
+        /* Планшет (768px - 1024px) */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .app-body { padding: 16px 20px; }
+            .tabs { display: flex; }
+            .tab-select { display: none; }
+            .form-row { flex-direction: row; flex-wrap: wrap; }
+            .form-group { flex: 1 1 calc(50% - 8px); width: auto; }
+            .btn { width: auto; margin-top: 0; }
+            .header-actions { order: 0; width: auto; justify-content: flex-end; }
+            .header-title { font-size: 1.1rem; }
+        }
+
+        /* ПК (от 1025px) */
+        @media (min-width: 1025px) {
+            .app-body { padding: 16px 24px; }
+            .tabs { display: flex; }
+            .tab-select { display: none; }
+            .form-row { flex-direction: row; flex-wrap: wrap; }
+            .form-group { flex: 1 1 200px; width: auto; }
+            .btn { width: auto; margin-top: 0; }
+            .header-actions { order: 0; width: auto; justify-content: flex-end; }
+            .header-title { font-size: 1.3rem; }
+        }
+
+        /* Очень маленькие экраны (до 480px) */
+        @media (max-width: 480px) {
+            .header-emblem { width: 36px; height: 36px; }
+            .header-title { font-size: 0.85rem; }
+            .btn-logout { padding: 6px 10px; font-size: 0.7rem; }
+            .toast { bottom: 10px; right: 10px; padding: 10px 16px; }
+            .card { padding: 12px; }
+            th, td { padding: 8px 6px; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container" id="appContainer">
+    <header class="app-header">
+        <div class="header-emblem"><img src="https://static.life.ru/publications/2023/3/28/657401526268.0573-900x.jpeg" alt="Логотип"></div>
+        <div class="header-text">
+            <div class="header-title">Совет Первых Регионального отделения</div>
+            <div class="header-subtitle">Чувашская Республика</div>
+        </div>
+        <div class="header-actions" id="headerActions"></div>
+    </header>
+    <div class="app-body" id="appBody"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyB8uD5E5A2NOKqrNPTynsCT-RUdmSH5XSs",
+        authDomain: "rkyf-ea1a6.firebaseapp.com",
+        databaseURL: "https://rkyf-ea1a6-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "rkyf-ea1a6",
+        storageBucket: "rkyf-ea1a6.firebasestorage.app",
+        messagingSenderId: "33784384905",
+        appId: "1:33784384905:web:12dbf7356ec7f766856558"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const cache = {
+        users: [], grades: [], news: [], tasks: [],
+        taskCompletions: [], feedback: [], disputes: [],
+        notifications: [], settings: { theme: 'light', primaryColor: 'red' }
+    };
+
+    const DB_PATHS = {
+        users: 'users', grades: 'grades', news: 'news', tasks: 'tasks',
+        taskCompletions: 'taskCompletions', feedback: 'feedback',
+        disputes: 'disputes', notifications: 'notifications', settings: 'settings'
+    };
+
+    const DIRECTIONS = ['Расскажи о главном!','Береги планету!','Благо твори!','Учись и познавай!','Умей дружить!','Открывай страну!','Служи Отечеству!','Найди призвание!','Достигай и побеждай!','Дерзай и открывай!'];
+    const DISTRICTS = ['город Чебоксары','город Новочебоксарск','Алатырский муниципальный округ','Аликовский муниципальный округ','Батыревский муниципальный округ','Вурнарский муниципальный округ','Ибресинский муниципальный округ','Канашский муниципальный округ','Козловский муниципальный округ','Комсомольский муниципальный округ','Красноармейский муниципальный округ','Красночетайский муниципальный округ','Мариинско-Посадский муниципальный округ','Моргаушский муниципальный округ','Порецкий муниципальный округ','Урмарский муниципальный округ','Цивильский муниципальный округ','Чебоксарский муниципальный округ','Шемуршинский муниципальный округ','Шумерлинский муниципальный округ','Ядринский муниципальный округ','Яльчикский муниципальный округ','Янтиковский муниципальный округ'];
+    const GRADE_CATEGORIES = ['Работа в рабочих группах','Мероприятия','Собрания','Очные встречи','Индивидуальная помощь','Работа в направлении'];
+
+    const appBody = document.getElementById('appBody');
+    const headerActions = document.getElementById('headerActions');
+    const toast = document.getElementById('toast');
+
+    function showToast(msg, type='') {
+        toast.textContent = msg; toast.className = 'toast ' + type + ' show';
+        clearTimeout(toast._timeout);
+        toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+    function escapeHTML(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+    function genId() { return Date.now() + '_' + Math.random().toString(36).substr(2,6); }
+    function formatDate(iso) {
+        const d = new Date(iso);
+        return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    }
+
+    async function loadCache(key) {
+        const snap = await get(ref(db, DB_PATHS[key]));
+        return snap.exists() ? snap.val() : null;
+    }
+    async function saveCache(key, value) {
+        cache[key] = value;
+        await set(ref(db, DB_PATHS[key]), value).catch(e => console.warn('Firebase save error:', e));
+    }
+
+    function getUsers() {
+        cache.users.forEach(u => {
+            if (!u.leaderDirections) u.leaderDirections = [];
+            if (!u.fullName) u.fullName = '';
+            if (!u.district) u.district = '';
+        });
+        return cache.users;
+    }
+    async function saveUsers(u) { await saveCache('users', u); }
+    function getGrades() { return cache.grades; }
+    async function saveGrades(g) { await saveCache('grades', g); }
+    function getNews() { return cache.news; }
+    async function saveNews(n) { await saveCache('news', n); }
+    function getTasks() { return cache.tasks; }
+    async function saveTasks(t) { await saveCache('tasks', t); }
+    function getTaskCompletions() { return cache.taskCompletions; }
+    async function saveTaskCompletions(tc) { await saveCache('taskCompletions', tc); }
+    function getFeedback() { return cache.feedback; }
+    async function saveFeedback(f) { await saveCache('feedback', f); }
+    function getDisputes() { return cache.disputes; }
+    async function saveDisputes(d) { await saveCache('disputes', d); }
+    function getNotifications() { return cache.notifications; }
+    async function saveNotifications(n) { await saveCache('notifications', n); }
+    function getSettings() { return cache.settings; }
+    async function saveSettings(s) { await saveCache('settings', s); }
+    function getSession() { return JSON.parse(localStorage.getItem('session') || 'null'); }
+    function saveSession(s) { s ? localStorage.setItem('session', JSON.stringify(s)) : localStorage.removeItem('session'); }
+
+    function applySettings(s) {
+        document.body.classList.toggle('theme-dark', s.theme === 'dark');
+        document.body.classList.remove('primary-red','primary-blue','primary-white');
+        document.body.classList.add('primary-' + s.primaryColor);
+    }
+
+    function createInitialUsers() {
+        const admins = ['Лидер01Первый','Наставник02Второй','Капитан03Третий','Организатор04Четвертый','Вдохновитель05Пятый','Первопроходец06Шестой','Мастер07Седьмой','Энтузиаст08Восьмой','Творец09Девятый','Созидатель10Десятый'];
+        const users = [];
+        admins.forEach((p,i) => users.push({ id: i, login: 'admin'+String(i+1).padStart(2,'0'), password: p, name: 'Администратор '+(i+1), role: 'admin', fullName: '', joinDate: '', district: '', leaderDirections: [] }));
+        for (let i=1; i<=75; i++) {
+            const num = String(i).padStart(2,'0');
+            users.push({ id: i+10, login: 'участник'+num, password: 'пароль'+num, name: 'Участник '+num, role: 'user', fullName: '', joinDate: '', district: '', leaderDirections: [] });
+        }
+        return users;
+    }
+
+    async function initializeData() {
+        for (const key of Object.keys(DB_PATHS)) {
+            const data = await loadCache(key);
+            if (data) {
+                cache[key] = data;
+            } else {
+                if (key === 'users') {
+                    const users = createInitialUsers();
+                    await saveCache('users', users);
+                } else if (key === 'settings') {
+                    await saveCache('settings', { theme: 'light', primaryColor: 'red' });
+                } else {
+                    await saveCache(key, []);
+                }
+            }
+        }
+    }
+
+    function exportAllData() {
+        const data = { users: getUsers(), grades: getGrades(), news: getNews(), tasks: getTasks(), taskCompletions: getTaskCompletions(), feedback: getFeedback(), disputes: getDisputes(), notifications: getNotifications(), settings: getSettings() };
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'backup_' + new Date().toISOString().slice(0,10) + '.json'; a.click();
+        showToast('📥 Резервная копия сохранена', 'success');
+    }
+    async function importAllData(file) {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            try {
+                const data = JSON.parse(e.target.result);
+                if(data.users) await saveUsers(data.users);
+                if(data.grades) await saveGrades(data.grades);
+                if(data.news) await saveNews(data.news);
+                if(data.tasks) await saveTasks(data.tasks);
+                if(data.taskCompletions) await saveTaskCompletions(data.taskCompletions);
+                if(data.feedback) await saveFeedback(data.feedback);
+                if(data.disputes) await saveDisputes(data.disputes);
+                if(data.notifications) await saveNotifications(data.notifications);
+                if(data.settings) await saveSettings(data.settings);
+                applySettings(getSettings());
+                showToast('📤 Данные восстановлены', 'success'); location.reload();
+            } catch(e) { showToast('❌ Ошибка импорта', 'error'); }
+        };
+        reader.readAsText(file);
+    }
+
+    function openSettingsModal() {
+        const s = getSettings();
+        const modal = document.createElement('div'); modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h3>⚙️ Настройки</h3>
+                <div style="margin:20px 0;"><label>Тема:</label><div style="display:flex;gap:10px;margin-top:8px;"><div class="theme-option" data-theme="light" style="padding:10px 20px;border-radius:20px;background:${s.theme==='light'?'var(--primary)':'var(--bg)'};">Светлая</div><div class="theme-option" data-theme="dark" style="padding:10px 20px;border-radius:20px;background:${s.theme==='dark'?'var(--primary)':'var(--bg)'};">Тёмная</div></div></div>
+                <div style="margin:20px 0;"><label>Цвет:</label><div style="display:flex;gap:10px;margin-top:8px;"><div class="color-option" data-color="red" style="width:40px;height:40px;border-radius:50%;background:#D4002A;"></div><div class="color-option" data-color="blue" style="width:40px;height:40px;border-radius:50%;background:#0039A6;"></div><div class="color-option" data-color="white" style="width:40px;height:40px;border-radius:50%;background:#FFF;"></div></div></div>
+                <div style="margin:20px 0;"><button class="btn btn-primary" id="exportBtn">📥 Экспорт</button> <input type="file" id="importFile" accept=".json" style="display:none;"> <button class="btn btn-primary" id="importBtn">📤 Импорт</button></div>
+                <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()">Закрыть</button>
+            </div>`;
+        document.body.appendChild(modal);
+        modal.querySelectorAll('.theme-option').forEach(b => b.onclick = () => { s.theme = b.dataset.theme; saveSettings(s); applySettings(s); modal.remove(); renderDashboard(); });
+        modal.querySelectorAll('.color-option').forEach(c => c.onclick = () => { s.primaryColor = c.dataset.color; saveSettings(s); applySettings(s); modal.remove(); renderDashboard(); });
+        modal.querySelector('#exportBtn').onclick = exportAllData;
+        modal.querySelector('#importBtn').onclick = () => modal.querySelector('#importFile').click();
+        modal.querySelector('#importFile').onchange = (e) => { if(e.target.files[0]) importAllData(e.target.files[0]); modal.remove(); };
+        modal.onclick = e => { if(e.target === modal) modal.remove(); };
+    }
+
+    function renderLogin(error='') {
+        renderHeader(null);
+        appBody.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:center;flex:1;">
+                <div class="card" style="max-width:440px;width:100%;text-align:center;">
+                    <h2>Вход</h2>
+                    <form id="loginForm">
+                        <div class="form-group"><label>Логин</label><input type="text" id="loginInput" required></div>
+                        <div class="form-group" style="position:relative;"><label>Пароль</label><input type="password" id="passInput" required><button type="button" class="password-toggle" id="togglePass">👁️</button></div>
+                        <button class="btn btn-primary" style="width:100%;">Войти</button>
+                        <div id="loginError" style="color:red;">${escapeHTML(error)}</div>
+                    </form>
+                </div>
+            </div>`;
+        document.getElementById('togglePass').onclick = () => {
+            const p = document.getElementById('passInput');
+            p.type = p.type === 'password' ? 'text' : 'password';
+            document.getElementById('togglePass').textContent = p.type === 'password' ? '👁️' : '🙈';
+        };
+        document.getElementById('loginForm').onsubmit = e => {
+            e.preventDefault();
+            const login = document.getElementById('loginInput').value.trim();
+            const pass = document.getElementById('passInput').value.trim();
+            const user = getUsers().find(u => u.login === login && u.password === pass);
+            if (user) { saveSession({ userId: user.id, role: user.role }); renderDashboard(); showToast('✅ Добро пожаловать!', 'success'); }
+            else document.getElementById('loginError').textContent = '❌ Неверные данные';
+        };
+    }
+
+    function renderHeader(session) {
+        const settingsBtn = '<button class="btn-icon" onclick="window._openSettingsModal()">⚙️</button>';
+        if (!session) { headerActions.innerHTML = settingsBtn; return; }
+        const user = getUsers().find(u => u.id === session.userId);
+        if (!user) { headerActions.innerHTML = settingsBtn; return; }
+        const badge = user.role === 'admin' ? '<span class="admin-badge">👑 Администратор</span>' : '<span class="user-badge">👤 '+escapeHTML(user.fullName||user.name)+'</span>';
+        headerActions.innerHTML = badge + '<button class="btn-logout" onclick="window._logout()">🚪 Выйти</button>' + settingsBtn;
+    }
+
+    function renderDashboard() {
+        const session = getSession();
+        if (!session) return renderLogin();
+        const user = getUsers().find(u => u.id === session.userId);
+        if (!user) return renderLogin();
+        renderHeader(session);
+
+        let tabs = ['📊 Оценки','📰 Новости','📋 Задания','💬 Обратная связь'];
+        if (user.role === 'admin') tabs.push('📈 Сводка','👥 Пользователи','⚠️ Оспаривания');
+        else {
+            tabs.push('🏆 Рейтинг');
+            if (user.leaderDirections?.length) tabs.push('🎯 Направление');
+        }
+
+        appBody.innerHTML = `
+            <select class="tab-select" id="tabSelect">${tabs.map((t,i) => `<option value="${i}">${t}</option>`).join('')}</select>
+            <div class="tabs" id="tabNav">${tabs.map((t,i) => `<button class="tab-btn" data-tab="${i}">${t}</button>`).join('')}</div>
+            <div class="tab-content" id="tabContent"></div>`;
+
+        const select = document.getElementById('tabSelect');
+        const btns = document.querySelectorAll('.tab-btn');
+
+        function switchTab(idx) {
+            btns.forEach((b,i) => b.classList.toggle('active', i===idx));
+            if (select) select.value = idx;
+            const content = document.getElementById('tabContent');
+            if (idx === 0) content.innerHTML = renderGradesTab();
+            else if (idx === 1) content.innerHTML = renderNewsTab();
+            else if (idx === 2) content.innerHTML = renderTasksTab();
+            else if (idx === 3) content.innerHTML = renderFeedbackTab();
+            else if (idx === 4) {
+                if (user.role === 'admin') content.innerHTML = renderSummaryTab();
+                else content.innerHTML = renderPublicRating();
+            }
+            else if (idx === 5 && user.role === 'admin') content.innerHTML = renderUsersTab();
+            else if (idx === 6 && user.role === 'admin') content.innerHTML = renderDisputesTab();
+            else if (idx === 5 && user.leaderDirections?.length) content.innerHTML = renderLeaderDirectionTab();
+            bindTabEvents(idx);
+        }
+
+        select?.addEventListener('change', () => switchTab(parseInt(select.value)));
+        btns.forEach(b => b.addEventListener('click', () => switchTab(parseInt(b.dataset.tab))));
+
+        switchTab(0);
+        if (user.role === 'user') checkUnseenNotifications(session.userId);
+    }
+
+    // ====== ОЦЕНКИ ======
+    function renderGradesTab() {
+        const session = getSession();
+        const user = getUsers().find(u => u.id === session.userId);
+        const allGrades = getGrades();
+
+        if (user.role === 'admin') {
+            const users = getUsers().filter(u => u.role === 'user');
+            const selId = users.length ? users[0].id : null;
+            const grades = allGrades.filter(g => g.userId === selId).sort((a,b)=>new Date(b.date)-new Date(a.date));
+            return `
+            <div class="card"><div class="card-header">👥 Участник: <select id="gradeUserSelect">${users.map(u => `<option value="${u.id}">${escapeHTML(u.fullName||u.name)} (${u.login})</option>`).join('')}</select></div></div>
+            <div class="card"><div class="card-header">➕ Выставить оценку (0-4)</div>
+                <form id="addGradeForm" class="form-row">
+                    <div class="form-group"><label>Категория</label><select id="gradeCategory">${GRADE_CATEGORIES.map(c => `<option>${c}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Оценка</label><select id="gradeVal">${[4,3,2,1,0].map(v=>`<option value="${v}">${v}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Дата</label><input type="date" id="gradeDate" value="${new Date().toISOString().split('T')[0]}"></div>
+                    <div class="form-group" style="flex:1;"><label>Описание</label><input id="gradeDesc" required></div>
+                    <button type="submit" class="btn btn-primary">✅ Выставить</button>
+                </form>
+            </div>
+            <div class="card"><div class="card-header">📋 Оценки</div>
+            ${grades.length ? `<div class="table-wrapper"><table><thead><tr><th>№</th><th>Категория</th><th>Оценка</th><th>Описание</th><th>Дата</th><th>Действие</th></tr></thead><tbody>
+            ${grades.map((g,i)=>`<tr><td>${i+1}</td><td>${escapeHTML(g.category||'')}</td><td><span class="grade-badge grade-${g.grade}">${g.grade}</span></td><td>${escapeHTML(g.description)}</td><td>${formatDate(g.date)}</td><td><button class="btn btn-sm" onclick="window._editGrade('${g.id}')">✏️</button> <button class="btn btn-danger btn-sm" data-gradeid="${g.id}">🗑</button></td></tr>`).join('')}
+            </tbody></table></div>` : '<div class="empty-state">Нет оценок</div>'}
+            </div>`;
+        } else if (user.leaderDirections?.length) {
+            const directions = user.leaderDirections;
+            const myDirectionGrades = allGrades.filter(g => directions.includes(g.direction) || directions.includes(g.category)).sort((a,b)=>new Date(b.date)-new Date(a.date));
+            return `
+            <div class="card"><div class="card-header">🎯 Мои направления: ${directions.map(d => `<span style="background:var(--primary-light); padding:4px 10px; border-radius:12px; margin:2px;">${d}</span>`).join('')}</div></div>
+            <div class="card"><div class="card-header">➕ Выставить оценку по направлению</div>
+                <form id="addGradeForm" class="form-row">
+                    <div class="form-group"><label>Категория</label><select id="gradeCategory">${GRADE_CATEGORIES.map(c => `<option>${c}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Направление</label><select id="gradeDirection">${directions.map(d => `<option>${d}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Оценка</label><select id="gradeVal">${[4,3,2,1,0].map(v=>`<option>${v}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Участник</label><select id="gradeUserId">${getUsers().filter(u=>u.role==='user').map(u=>`<option value="${u.id}">${escapeHTML(u.fullName||u.name)}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Дата</label><input type="date" id="gradeDate" value="${new Date().toISOString().split('T')[0]}"></div>
+                    <div class="form-group" style="flex:1;"><label>Описание</label><input id="gradeDesc" required></div>
+                    <button type="submit" class="btn btn-primary">✅ Выставить</button>
+                </form>
+            </div>
+            <div class="card"><div class="card-header">📋 Оценки по направлениям</div>
+            ${myDirectionGrades.length ? `<div class="table-wrapper"><table><thead><tr><th>№</th><th>Категория</th><th>Направление</th><th>Участник</th><th>Оценка</th><th>Описание</th><th>Дата</th><th></th></tr></thead><tbody>
+            ${myDirectionGrades.map((g,i)=>`<tr><td>${i+1}</td><td>${escapeHTML(g.category||'')}</td><td>${escapeHTML(g.direction||'')}</td><td>${escapeHTML((getUsers().find(u=>u.id===g.userId)||{}).fullName||'')}</td><td><span class="grade-badge grade-${g.grade}">${g.grade}</span></td><td>${escapeHTML(g.description)}</td><td>${formatDate(g.date)}</td><td><button class="btn btn-sm" onclick="window._editGrade('${g.id}')">✏️</button></td></tr>`).join('')}
+            </tbody></table></div>` : '<div class="empty-state">Нет оценок</div>'}
+            </div>`;
+        } else {
+            const myGrades = allGrades.filter(g => g.userId === user.id).sort((a,b)=>new Date(b.date)-new Date(a.date));
+            return `
+            <div class="card"><div class="card-header">📊 Мои оценки (всего: ${myGrades.length})</div>
+            ${myGrades.length ? `<div class="table-wrapper"><table><thead><tr><th>№</th><th>Категория</th><th>Направление</th><th>Оценка</th><th>Описание</th><th>Дата</th><th></th></tr></thead><tbody>
+            ${myGrades.map((g,i)=>`<tr><td>${i+1}</td><td>${escapeHTML(g.category||'')}</td><td>${escapeHTML(g.direction||'—')}</td><td><span class="grade-badge grade-${g.grade}">${g.grade}</span></td><td>${escapeHTML(g.description)}</td><td>${formatDate(g.date)}</td><td><button class="btn btn-sm" onclick="window._disputeGrade('${g.id}')">⚠️ Оспорить</button></td></tr>`).join('')}
+            </tbody></table></div>` : '<div class="empty-state">Пока нет оценок</div>'}
+            </div>`;
+        }
+    }
+
+    window._editGrade = function(gradeId) {
+        const grades = getGrades();
+        const grade = grades.find(g => g.id === gradeId);
+        if (!grade) return;
+        const modal = document.createElement('div'); modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h3>Редактировать оценку</h3>
+                <div class="form-group"><label>Категория</label><select id="editGradeCategory">${GRADE_CATEGORIES.map(c => `<option ${c===grade.category?'selected':''}>${c}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Оценка</label><select id="editGradeVal">${[4,3,2,1,0].map(v => `<option value="${v}" ${v===grade.grade?'selected':''}>${v}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Описание</label><input id="editGradeDesc" value="${escapeHTML(grade.description)}"></div>
+                <button class="btn btn-primary" id="saveEditGrade">💾 Сохранить</button>
+                <button class="btn" onclick="this.closest('.modal-overlay').remove()">Отмена</button>
+            </div>`;
+        document.body.appendChild(modal);
+        modal.querySelector('#saveEditGrade').onclick = () => {
+            grade.category = modal.querySelector('#editGradeCategory').value;
+            grade.grade = parseInt(modal.querySelector('#editGradeVal').value);
+            grade.description = modal.querySelector('#editGradeDesc').value.trim();
+            saveGrades(grades); modal.remove(); renderDashboard(); showToast('✅ Оценка обновлена', 'success');
+        };
+        modal.onclick = e => { if(e.target === modal) modal.remove(); };
+    };
+
+    window._disputeGrade = function(gradeId) {
+        const reason = prompt('Причина оспаривания:');
+        if (!reason) return;
+        const disputes = getDisputes();
+        disputes.push({ id: genId(), gradeId, userId: getSession().userId, reason, status: 'open', date: new Date().toISOString() });
+        saveDisputes(disputes);
+        showToast('⚠️ Оспаривание отправлено', 'success');
+    };
+
+    function bindGradesEvents() {
+        const session = getSession();
+        const user = getUsers().find(u => u.id === session.userId);
+        if (user.role === 'admin') {
+            const select = document.getElementById('gradeUserSelect');
+            const form = document.getElementById('addGradeForm');
+            if (!select || !form) return;
+            select.onchange = () => {
+                const grades = getGrades().filter(g => g.userId === parseInt(select.value)).sort((a,b)=>new Date(b.date)-new Date(a.date));
+                const tbody = document.querySelector('.table-wrapper tbody');
+                if (tbody) tbody.innerHTML = grades.map((g,i)=>`<tr><td>${i+1}</td><td>${escapeHTML(g.category||'')}</td><td><span class="grade-badge grade-${g.grade}">${g.grade}</span></td><td>${escapeHTML(g.description)}</td><td>${formatDate(g.date)}</td><td><button class="btn btn-sm" onclick="window._editGrade('${g.id}')">✏️</button> <button class="btn btn-danger btn-sm" data-gradeid="${g.id}">🗑</button></td></tr>`).join('');
+            };
+            form.onsubmit = e => {
+                e.preventDefault();
+                const grades = getGrades();
+                grades.push({
+                    id: genId(),
+                    userId: parseInt(select.value),
+                    grade: parseInt(document.getElementById('gradeVal').value),
+                    category: document.getElementById('gradeCategory').value,
+                    description: document.getElementById('gradeDesc').value.trim(),
+                    date: document.getElementById('gradeDate').value + 'T00:00:00',
+                    direction: document.getElementById('gradeCategory').value === 'Работа в направлении' ? 'Общая' : ''
+                });
+                saveGrades(grades);
+                showToast('✅ Оценка добавлена', 'success');
+                select.dispatchEvent(new Event('change'));
+                document.getElementById('gradeDesc').value = '';
+            };
+            document.body.addEventListener('click', e => {
+                if (e.target.classList.contains('btn-danger') && e.target.dataset.gradeid) {
+                    if (confirm('Удалить?')) {
+                        saveGrades(getGrades().filter(g => g.id !== e.target.dataset.gradeid));
+                        select.dispatchEvent(new Event('change'));
+                    }
+                }
+            });
+        } else if (user.leaderDirections?.length) {
+            const form = document.getElementById('addGradeForm');
+            if (!form) return;
+            form.onsubmit = e => {
+                e.preventDefault();
+                const grades = getGrades();
+                grades.push({
+                    id: genId(),
+                    userId: parseInt(document.getElementById('gradeUserId').value),
+                    grade: parseInt(document.getElementById('gradeVal').value),
+                    category: document.getElementById('gradeCategory').value,
+                    direction: document.getElementById('gradeDirection').value,
+                    description: document.getElementById('gradeDesc').value.trim(),
+                    date: document.getElementById('gradeDate').value + 'T00:00:00'
+                });
+                saveGrades(grades);
+                showToast('✅ Оценка выставлена', 'success');
+                renderDashboard();
+            };
+        }
+    }
+
+    // ====== НОВОСТИ ======
+    function renderNewsTab() {
+        const session = getSession();
+        const news = getNews().sort((a,b)=>new Date(b.date)-new Date(a.date));
+        let formHtml = '';
+        if (session.role === 'admin') {
+            formHtml = `
+            <div class="card"><div class="card-header">➕ Добавить новость</div>
+                <form id="newsForm" class="form-row">
+                    <div class="form-group"><label>Заголовок</label><input id="newsTitle" required></div>
+                    <div class="form-group" style="flex:2;"><label>Содержание</label><input id="newsContent" required></div>
+                    <div class="form-group"><label>Ссылка</label><input id="newsLink" placeholder="https://..."></div>
+                    <div class="form-group"><label>Фото URL</label><input id="newsImage"></div>
+                    <div class="form-group"><label>Видео URL</label><input id="newsVideo"></div>
+                    <button type="submit" class="btn btn-primary">Опубликовать</button>
+                </form>
+            </div>`;
+        }
+        let items = news.map(n => `
+            <div class="card" style="padding:16px;">
+                <strong>${escapeHTML(n.title)}</strong>
+                <p>${escapeHTML(n.content)}</p>
+                ${n.image ? `<img src="${escapeHTML(n.image)}" style="max-width:180px;">` : ''}
+                ${n.video ? (n.video.includes('youtube.com/watch') ? `<iframe width="280" height="158" src="https://www.youtube.com/embed/${new URL(n.video).searchParams.get('v')}" frameborder="0" allowfullscreen></iframe>` : `<video controls width="280"><source src="${escapeHTML(n.video)}"></video>`) : ''}
+                ${n.link ? `<a href="${escapeHTML(n.link)}" target="_blank">🔗 Подробнее</a>` : ''}
+                <small>${formatDate(n.date)}</small>
+            </div>`).join('');
+        return formHtml + '<div style="display:flex;flex-direction:column;gap:12px;">' + (items || '<div class="empty-state">Нет новостей</div>') + '</div>';
+    }
+
+    function bindNewsEvents() {
+        const form = document.getElementById('newsForm');
+        if (!form) return;
+        form.onsubmit = e => {
+            e.preventDefault();
+            const news = getNews();
+            news.push({
+                id: genId(),
+                title: document.getElementById('newsTitle').value,
+                content: document.getElementById('newsContent').value,
+                link: document.getElementById('newsLink').value,
+                image: document.getElementById('newsImage').value,
+                video: document.getElementById('newsVideo').value,
+                date: new Date().toISOString()
+            });
+            saveNews(news);
+            showToast('📰 Новость добавлена', 'success');
+            renderDashboard();
+        };
+    }
+
+    // ====== ЗАДАНИЯ ======
+    function renderTasksTab() {
+        const session = getSession();
+        const user = getUsers().find(u => u.id === session.userId);
+        const tasks = getTasks().sort((a,b)=>new Date(b.date)-new Date(a.date));
+        const completions = getTaskCompletions();
+        if (user.role === 'admin') {
+            return `
+            <div class="card"><div class="card-header">➕ Добавить задание</div>
+                <form id="taskForm" class="form-row">
+                    <div class="form-group"><label>Название</label><input id="taskTitle" required></div>
+                    <div class="form-group"><label>Описание</label><input id="taskDesc" required></div>
+                    <div class="form-group"><label>Ссылка</label><input id="taskLink"></div>
+                    <div class="form-group"><label>Фото URL</label><input id="taskImage"></div>
+                    <div class="form-group"><label>Видео URL</label><input id="taskVideo"></div>
+                    <div class="form-group"><label>Текст уведомления</label><input id="taskNotify" placeholder="Увидят все участники"></div>
+                    <button type="submit" class="btn btn-primary">Опубликовать</button>
+                </form>
+            </div>
+            ${tasks.map(task => {
+                const done = completions.filter(c => c.taskId === task.id && c.status === 'done').length;
+                const undone = completions.filter(c => c.taskId === task.id && c.status === 'undone').length;
+                return `<div class="card">
+                    <strong>${escapeHTML(task.title)}</strong>
+                    <p>${escapeHTML(task.description)}</p>
+                    ${task.image ? `<img src="${escapeHTML(task.image)}" style="max-width:180px;">` : ''}
+                    ${task.video ? `<video controls width="280"><source src="${escapeHTML(task.video)}"></video>` : ''}
+                    <div>✅ ${done} | ❌ ${undone}</div>
+                    <button class="btn btn-sm" onclick="window._editTask('${task.id}')">✏️</button>
+                    <button class="btn btn-danger btn-sm" onclick="window._deleteTask('${task.id}')">🗑</button>
+                </div>`;
+            }).join('') || '<div class="empty-state">Нет заданий</div>'}`;
+        } else {
+            return tasks.map(task => {
+                const my = completions.find(c => c.taskId === task.id && c.userId === user.id);
+                let statusHtml = '';
+                if (my) {
+                    statusHtml = my.status === 'done' ? '<span class="status-done">✅ Выполнено</span>' : '<span class="status-undone">❌ Не выполнено</span>';
+                } else {
+                    statusHtml = `<button class="btn btn-success btn-sm" onclick="window._setTaskStatus('${task.id}','done')">✅ Выполнено</button> <button class="btn btn-warning btn-sm" onclick="window._setTaskStatus('${task.id}','undone')">❌ Не выполнено</button>`;
+                }
+                return `<div class="card"><strong>${escapeHTML(task.title)}</strong><p>${escapeHTML(task.description)}</p>${statusHtml}</div>`;
+            }).join('') || '<div class="empty-state">Нет заданий</div>';
+        }
+    }
+
+    window._editTask = function(taskId) {
+        const tasks = getTasks();
+        const task = tasks.find(t => t.id === taskId);
+        if (!task) return;
+        const modal = document.createElement('div'); modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <h3>Редактировать задание</h3>
+                <div class="form-group"><label>Название</label><input id="editTaskTitle" value="${escapeHTML(task.title)}" required></div>
+                <div class="form-group"><label>Описание</label><input id="editTaskDesc" value="${escapeHTML(task.description)}" required></div>
+                <div class="form-group"><label>Ссылка</label><input id="editTaskLink" value="${escapeHTML(task.link||'')}"></div>
+                <div class="form-group"><label>Фото URL</label><input id="editTaskImage" value="${escapeHTML(task.image||'')}"></div>
+                <div class="form-group"><label>Видео URL</label><input id="editTaskVideo" value="${escapeHTML(task.video||'')}"></div>
+                <div class="form-group"><label>Текст уведомления</label><input id="editTaskNotify" value="${escapeHTML(task.notify||'')}"></div>
+                <button class="btn btn-primary" id="saveTaskEdit">💾 Сохранить</button>
+                <button class="btn" onclick="this.closest('.modal-overlay').remove()">Отмена</button>
+            </div>`;
+        document.body.appendChild(modal);
+        modal.querySelector('#saveTaskEdit').onclick = () => {
+            task.title = modal.querySelector('#editTaskTitle').value;
+            task.description = modal.querySelector('#editTaskDesc').value;
+            task.link = modal.querySelector('#editTaskLink').value;
+            task.image = modal.querySelector('#editTaskImage').value;
+            task.video = modal.querySelector('#editTaskVideo').value;
+            task.notify = modal.querySelector('#editTaskNotify').value;
+            saveTasks(tasks); modal.remove(); renderDashboard(); showToast('✅ Задание обновлено', 'success');
+        };
+        modal.onclick = e => { if(e.target === modal) modal.remove(); };
+    };
+
+    window._deleteTask = function(taskId) {
+        if (!confirm('Удалить задание?')) return;
+        saveTasks(getTasks().filter(t => t.id !== taskId));
+        showToast('🗑 Задание удалено', 'success');
+        renderDashboard();
+    };
+
+    window._setTaskStatus = function(taskId, status) {
+        const completions = getTaskCompletions();
+        const exist = completions.findIndex(c => c.taskId === taskId && c.userId === getSession().userId);
+        if (exist >= 0) { completions[exist].status = status; completions[exist].date = new Date().toISOString(); }
+        else completions.push({ id: genId(), taskId, userId: getSession().userId, status, date: new Date().toISOString() });
+        saveTaskCompletions(completions);
+        showToast(status === 'done' ? '✅ Отмечено' : '❌ Не выполнено', 'success');
+        renderDashboard();
+    };
+
+    function bindTasksEvents() {
+        const form = document.getElementById('taskForm');
+        if (!form) return;
+        form.onsubmit = e => {
+            e.preventDefault();
+            const tasks = getTasks();
+            const newTask = {
+                id: genId(),
+                title: document.getElementById('taskTitle').value,
+                description: document.getElementById('taskDesc').value,
+                link: document.getElementById('taskLink').value,
+                image: document.getElementById('taskImage').value,
+                video: document.getElementById('taskVideo').value,
+                notify: document.getElementById('taskNotify').value,
+                date: new Date().toISOString()
+            };
+            tasks.push(newTask);
+            saveTasks(tasks);
+            if (newTask.notify) {
+                const notifs = getNotifications();
+                notifs.push({ id: genId(), taskId: newTask.id, message: newTask.notify, seenBy: [] });
+                saveNotifications(notifs);
+            }
+            showToast('📋 Задание добавлено', 'success');
+            renderDashboard();
+        };
+    }
+
+    // ====== ОБРАТНАЯ СВЯЗЬ ======
+    function renderFeedbackTab() {
+        const session = getSession();
+        const fb = getFeedback();
+        if (session.role === 'user') {
+            return `<div class="card"><form id="feedbackForm" class="form-row"><textarea id="fbMsg" required></textarea><button class="btn btn-primary">Отправить</button></form></div>` +
+                fb.filter(f=>f.userId===session.userId).map(f=>`<div class="card"><p>${escapeHTML(f.message)}</p><small>${formatDate(f.date)}</small></div>`).join('');
+        }
+        const users = getUsers();
+        return fb.map(f => `<div class="card"><strong>${escapeHTML((users.find(u=>u.id===f.userId)||{}).fullName||'')}</strong><p>${escapeHTML(f.message)}</p></div>`).join('');
+    }
+
+    function bindFeedbackEvents() {
+        const form = document.getElementById('feedbackForm');
+        if (!form) return;
+        form.onsubmit = e => {
+            e.preventDefault();
+            const fb = getFeedback();
+            fb.push({ id: genId(), userId: getSession().userId, message: form.fbMsg.value, date: new Date().toISOString() });
+            saveFeedback(fb);
+            showToast('💬 Отправлено', 'success');
+            renderDashboard();
+        };
+    }
+
+    // ====== ПУБЛИЧНЫЙ РЕЙТИНГ ======
+    function renderPublicRating() {
+        const users = getUsers().filter(u => u.role === 'user');
+        const grades = getGrades();
+        const rows = users.map(u => {
+            const userGrades = grades.filter(g => g.userId === u.id);
+            const avg = userGrades.length ? (userGrades.reduce((s,g)=>s+g.grade,0)/userGrades.length).toFixed(2) : '—';
+            return { user: u, avg, count: userGrades.length };
+        }).sort((a,b) => {
+            if (a.avg === '—') return 1;
+            if (b.avg === '—') return -1;
+            return parseFloat(b.avg) - parseFloat(a.avg);
+        });
+        return `
+        <div class="card">
+            <div class="card-header">🏆 Общий рейтинг</div>
+            <div class="table-wrapper"><table>
+                <thead><tr><th>№</th><th>Участник</th><th>Округ</th><th>Средний балл</th><th>Оценок</th></tr></thead>
+                <tbody>${rows.map((r,i) => `<tr class="${r.avg!=='—' && parseFloat(r.avg)<1.5 ? 'low-avg' : ''}">
+                    <td>${i+1}</td>
+                    <td>${escapeHTML(r.user.fullName||r.user.name)}</td>
+                    <td>${escapeHTML(r.user.district||'—')}</td>
+                    <td>${r.avg}</td>
+                    <td>${r.count}</td>
+                </tr>`).join('')}</tbody>
+            </table></div>
+        </div>`;
+    }
+
+    // ====== СВОДКА (админ) ======
+    function renderSummaryTab() {
+        const users = getUsers().filter(u => u.role === 'user');
+        const grades = getGrades();
+        const districts = ['Все', ...DISTRICTS];
+        const districtOptions = districts.map(d => `<option value="${d}">${d}</option>`).join('');
+        const userOptions = ['Все', ...users.map(u => u.fullName || u.name)].map(name => `<option value="${name}">${name}</option>`).join('');
+
+        function buildRating(filterDistrict = 'Все') {
+            const filtered = filterDistrict === 'Все' ? users : users.filter(u => u.district === filterDistrict);
+            const rows = filtered.map(u => {
+                const userGrades = grades.filter(g => g.userId === u.id);
+                const avg = userGrades.length ? (userGrades.reduce((s,g)=>s+g.grade,0)/userGrades.length).toFixed(2) : '—';
+                return { user: u, avg, count: userGrades.length };
+            }).sort((a,b) => {
+                if (a.avg === '—') return 1;
+                if (b.avg === '—') return -1;
+                return parseFloat(b.avg) - parseFloat(a.avg);
+            });
+
+            const lowAvgUsers = rows.filter(r => r.avg !== '—' && parseFloat(r.avg) < 1.5);
+            if (lowAvgUsers.length) {
+                setTimeout(() => {
+                    const modal = document.createElement('div'); modal.className = 'modal-overlay';
+                    modal.innerHTML = `<div class="modal-content"><h3>⚠️ Низкий средний балл</h3><ul>${lowAvgUsers.map(r => `<li>${escapeHTML(r.user.fullName||r.user.name)} — ${r.avg}</li>`).join('')}</ul><button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()">ОК</button></div>`;
+                    document.body.appendChild(modal);
+                    modal.onclick = e => { if(e.target === modal) modal.remove(); };
+                }, 200);
+            }
+
+            return `
+            <div class="table-wrapper"><table>
+                <thead><tr><th>№</th><th>Участник</th><th>Округ</th><th>Средний балл</th><th>Оценок</th></tr></thead>
+                <tbody>${rows.map((r,i) => `<tr class="${r.avg!=='—' && parseFloat(r.avg)<1.5 ? 'low-avg' : ''}">
+                    <td>${i+1}</td>
+                    <td>${escapeHTML(r.user.fullName||r.user.name)}</td>
+                    <td>${escapeHTML(r.user.district||'—')}</td>
+                    <td>${r.avg}</td>
+                    <td>${r.count}</td>
+                </tr>`).join('')}</tbody>
+            </table></div>`;
+        }
+
+        function buildAllGrades(filterDistrict = 'Все', filterUser = 'Все') {
+            let filteredGrades = [...grades];
+            if (filterDistrict !== 'Все') {
+                filteredGrades = filteredGrades.filter(g => {
+                    const u = users.find(u => u.id === g.userId);
+                    return u && u.district === filterDistrict;
+                });
+            }
+            if (filterUser !== 'Все') {
+                filteredGrades = filteredGrades.filter(g => {
+                    const u = users.find(u => u.id === g.userId);
+                    return u && (u.fullName || u.name) === filterUser;
+                });
+            }
+            filteredGrades.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+            if (!filteredGrades.length) return '<div class="empty-state">Нет оценок</div>';
+
+            return `
+            <div class="table-wrapper"><table>
+                <thead><tr><th>Дата</th><th>Участник</th><th>Округ</th><th>Категория</th><th>Направление</th><th>Оценка</th><th>Описание</th></tr></thead>
+                <tbody>${filteredGrades.map(g => {
+                    const u = users.find(u => u.id === g.userId);
+                    return `<tr>
+                        <td>${formatDate(g.date)}</td>
+                        <td>${escapeHTML(u?.fullName||u?.name||'—')}</td>
+                        <td>${escapeHTML(u?.district||'—')}</td>
+                        <td>${escapeHTML(g.category||'—')}</td>
+                        <td>${escapeHTML(g.direction||'—')}</td>
+                        <td><span class="grade-badge grade-${g.grade}">${g.grade}</span></td>
+                        <td>${escapeHTML(g.description)}</td>
+                    </tr>`;
+                }).join('')}</tbody>
+            </table></div>`;
+        }
+
+        const html = `
+        <div class="card">
+            <div class="card-header">
+                <span>📈 Сводка</span>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <label>Округ:</label>
+                    <select id="summaryDistrictFilter" style="padding:6px 12px;border-radius:20px;">${districtOptions}</select>
+                    <label>ФИО:</label>
+                    <select id="summaryUserFilter" style="padding:6px 12px;border-radius:20px;">${userOptions}</select>
+                </div>
+            </div>
+            <div class="sub-tabs" id="summarySubTabs">
+                <button class="sub-tab-btn active" data-view="rating">🏆 Рейтинг</button>
+                <button class="sub-tab-btn" data-view="allGrades">📋 Все оценки</button>
+            </div>
+            <div id="summaryContent"></div>
+        </div>`;
+
+        setTimeout(() => {
+            const filterDistrict = document.getElementById('summaryDistrictFilter');
+            const filterUser = document.getElementById('summaryUserFilter');
+            const subTabs = document.querySelectorAll('.sub-tab-btn');
+            const contentDiv = document.getElementById('summaryContent');
+            let currentView = 'rating';
+
+            function refreshView() {
+                const district = filterDistrict.value;
+                const user = filterUser.value;
+                contentDiv.innerHTML = currentView === 'rating' ? buildRating(district) : buildAllGrades(district, user);
+            }
+
+            filterDistrict.addEventListener('change', refreshView);
+            filterUser.addEventListener('change', refreshView);
+            subTabs.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    subTabs.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentView = this.dataset.view;
+                    refreshView();
+                });
+            });
+
+            refreshView();
+        }, 0);
+
+        return html;
+    }
+
+    // ====== ПОЛЬЗОВАТЕЛИ ======
+    function renderUsersTab() {
+        const users = getUsers();
+        return `
+        <div class="card"><div class="card-header">👥 Пользователи</div>
+        <select id="userSelect">${users.map(u => `<option value="${u.id}">${u.login} (${u.role})</option>`).join('')}</select>
+        <form id="userEditForm" class="form-row">
+            <input id="editLogin" required><input id="editPassword" required><input id="editFullName" placeholder="ФИО">
+            <input type="date" id="editJoinDate"><select id="editDistrict"><option>—</option>${DISTRICTS.map(d=>`<option>${d}</option>`).join('')}</select>
+            <div><label>Направления лидера:</label><div id="leaderCheckboxes">${DIRECTIONS.map(d => `<label><input type="checkbox" value="${d}"> ${d}</label><br>`).join('')}</div></div>
+            <button class="btn btn-primary" type="submit">💾 Сохранить</button>
+            <button class="btn btn-danger" type="button" id="deleteUserBtn">🗑 Удалить</button>
+        </form></div>`;
+    }
+
+    function bindUsersEvents() {
+        const sel = document.getElementById('userSelect');
+        const form = document.getElementById('userEditForm');
+        if (!sel) return;
+        sel.onchange = () => {
+            const u = getUsers().find(u => u.id === parseInt(sel.value));
+            if (!u) return;
+            form.editLogin.value = u.login; form.editPassword.value = u.password;
+            form.editFullName.value = u.fullName || ''; form.editJoinDate.value = u.joinDate || '';
+            form.editDistrict.value = u.district || '';
+            document.querySelectorAll('#leaderCheckboxes input').forEach(cb => cb.checked = u.leaderDirections.includes(cb.value));
+        };
+        form.onsubmit = e => {
+            e.preventDefault();
+            const users = getUsers();
+            const u = users.find(u => u.id === parseInt(sel.value));
+            u.login = form.editLogin.value; u.password = form.editPassword.value;
+            u.fullName = form.editFullName.value; u.joinDate = form.editJoinDate.value;
+            u.district = form.editDistrict.value;
+            u.leaderDirections = Array.from(document.querySelectorAll('#leaderCheckboxes input:checked')).map(cb => cb.value);
+            saveUsers(users);
+            showToast('💾 Сохранено', 'success');
+            renderDashboard();
+        };
+        document.getElementById('deleteUserBtn').onclick = () => {
+            if (!confirm('Удалить пользователя и все данные?')) return;
+            const userId = parseInt(sel.value);
+            saveUsers(getUsers().filter(u => u.id !== userId));
+            saveGrades(getGrades().filter(g => g.userId !== userId));
+            saveTaskCompletions(getTaskCompletions().filter(c => c.userId !== userId));
+            saveFeedback(getFeedback().filter(f => f.userId !== userId));
+            saveDisputes(getDisputes().filter(d => d.userId !== userId));
+            showToast('🗑 Удалён', 'success');
+            renderDashboard();
+        };
+        sel.dispatchEvent(new Event('change'));
+    }
+
+    // ====== ОСПАРИВАНИЯ ======
+    function renderDisputesTab() {
+        const disputes = getDisputes();
+        const grades = getGrades();
+        const users = getUsers();
+        return disputes.map(d => {
+            const grade = grades.find(g => g.id === d.gradeId);
+            const user = users.find(u => u.id === d.userId);
+            return `<div class="card"><strong>${user?.fullName||user?.name}</strong>: оспаривание "${grade?.description||''}" (${grade?.grade})<br>
+                <button class="btn btn-sm" onclick="window._resolveDispute('${d.id}','approve')">✅ Одобрить</button>
+                <button class="btn btn-sm btn-danger" onclick="window._resolveDispute('${d.id}','reject')">❌ Отклонить</button></div>`;
+        }).join('') || '<div class="empty-state">Нет оспариваний</div>';
+    }
+
+    window._resolveDispute = function(disputeId, action) {
+        const disputes = getDisputes();
+        const dispute = disputes.find(d => d.id === disputeId);
+        if (!dispute) return;
+        if (action === 'approve') saveGrades(getGrades().filter(g => g.id !== dispute.gradeId));
+        saveDisputes(disputes.filter(d => d.id !== disputeId));
+        renderDashboard();
+    };
+
+    function renderLeaderDirectionTab() {
+        const user = getUsers().find(u => u.id === getSession().userId);
+        const grades = getGrades().filter(g => user.leaderDirections.includes(g.direction) || user.leaderDirections.includes(g.category));
+        return `<div class="card"><h3>🎯 Оценки по направлениям</h3>` + (grades.length ? grades.map(g => `<div>${g.direction||g.category}: ${g.grade} - ${g.description}</div>`).join('') : 'Нет оценок') + '</div>';
+    }
+
+    function checkUnseenNotifications(userId) {
+        const notifications = getNotifications().filter(n => !n.seenBy.includes(userId));
+        if (notifications.length) {
+            const msg = notifications.map(n => n.message).join('\n');
+            const overlay = document.createElement('div'); overlay.className = 'modal-overlay';
+            overlay.innerHTML = `<div class="modal-content"><h3>📢 Новое задание</h3><p>${escapeHTML(msg)}</p><button class="btn btn-primary" id="closeNotif">ОК</button></div>`;
+            document.body.appendChild(overlay);
+            overlay.querySelector('#closeNotif').onclick = () => {
+                notifications.forEach(n => n.seenBy.push(userId));
+                saveNotifications(getNotifications().map(n => notifications.includes(n) ? {...n} : n));
+                overlay.remove();
+            };
+            overlay.onclick = e => { if(e.target === overlay) overlay.remove(); };
+        }
+    }
+
+    function bindTabEvents(idx) {
+        if (idx === 0) bindGradesEvents();
+        else if (idx === 1) bindNewsEvents();
+        else if (idx === 2) bindTasksEvents();
+        else if (idx === 3) bindFeedbackEvents();
+        else if (idx === 5 && getSession()?.role === 'admin') bindUsersEvents();
+    }
+
+    window._logout = () => { saveSession(null); renderLogin(); showToast('👋 Вы вышли'); };
+    window._openSettingsModal = () => openSettingsModal();
+
+    async function init() {
+        await initializeData();
+        applySettings(getSettings());
+        const session = getSession();
+        if (session && getUsers().find(u => u.id === session.userId)) renderDashboard();
+        else renderLogin();
+    }
+    init();
+</script>
+</body>
+</html>
