@@ -3,143 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Совет Первых Регионального отделения</title>
+    <title>Совет Первых · Региональное отделение</title>
     <style>
         :root {
             --primary: #D4002A; --primary-dark: #A8001E; --primary-light: #FF1F4B;
+            --primary-gradient: linear-gradient(135deg, #D4002A 0%, #FF1F4B 100%);
             --white: #FFFFFF; --bg: #F4F5F9; --card-bg: #FFFFFF;
-            --text: #1A1A2E; --text-light: #555; --border: #E0E2EA;
-            --shadow: 0 4px 24px rgba(0,0,0,0.07); --radius: 16px;
-            --transition: 0.25s; --font: 'Segoe UI', 'Inter', sans-serif;
+            --text: #1A1A2E; --text-light: #6B7280; --text-lighter: #9CA3AF;
+            --border: #E5E7EB; --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+            --shadow: 0 4px 24px rgba(0,0,0,0.07); --shadow-lg: 0 12px 40px rgba(0,0,0,0.10);
+            --radius-sm: 10px; --radius: 16px; --radius-lg: 20px; --radius-xl: 28px;
+            --transition: 0.25s ease; --font: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
             --header-text: #FFFFFF; --btn-primary-text: #FFFFFF;
+            --success: #10B981; --warning: #F59E0B; --danger: #EF4444; --info: #3B82F6;
         }
         body.theme-dark {
-            --bg: #1A1A2E; --card-bg: #2C2C3A; --text: #E0E0E0;
-            --text-light: #AAAAAA; --border: #444; --shadow: 0 4px 24px rgba(0,0,0,0.3);
+            --bg: #111827; --card-bg: #1F2937; --text: #F3F4F6;
+            --text-light: #9CA3AF; --text-lighter: #6B7280; --border: #374151;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3); --shadow: 0 4px 24px rgba(0,0,0,0.4); --shadow-lg: 0 12px 40px rgba(0,0,0,0.5);
         }
-        body.primary-blue { --primary: #0039A6; --primary-dark: #002277; --primary-light: #1A5FDB; }
-        body.primary-red { --primary: #D4002A; --primary-dark: #A8001E; --primary-light: #FF1F4B; }
-        body.primary-white {
-            --primary: #FFFFFF; --primary-dark: #E0E0E0; --primary-light: #F5F5F5;
-            --header-text: #1A1A2E; --btn-primary-text: #1A1A2E; --white: #1A1A2E;
-        }
+        body.primary-blue { --primary: #2563EB; --primary-dark: #1D4ED8; --primary-light: #3B82F6; --primary-gradient: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%); }
+        body.primary-red { --primary: #D4002A; --primary-dark: #A8001E; --primary-light: #FF1F4B; --primary-gradient: linear-gradient(135deg, #D4002A 0%, #FF1F4B 100%); }
+        body.primary-white { --primary: #F9FAFB; --primary-dark: #E5E7EB; --primary-light: #FFFFFF; --primary-gradient: linear-gradient(135deg, #F9FAFB 0%, #FFFFFF 100%); --header-text: #1A1A2E; --btn-primary-text: #1A1A2E; }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: var(--font); background: var(--bg); color: var(--text);
             display: flex; align-items: center; justify-content: center;
-            min-height: 100vh; padding: 10px; transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh; padding: 12px; transition: all 0.3s ease;
+            -webkit-font-smoothing: antialiased;
         }
         .app-container {
             width: 100%; max-width: 1300px; background: var(--card-bg);
-            border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+            border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
             display: flex; flex-direction: column; max-height: 95vh; overflow: hidden;
+            border: 1px solid var(--border);
         }
         .app-header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: var(--header-text); padding: 14px 20px;
-            display: flex; align-items: center; gap: 12px; flex-shrink: 0; flex-wrap: wrap;
+            background: var(--primary-gradient);
+            color: var(--header-text); padding: 16px 24px;
+            display: flex; align-items: center; gap: 14px; flex-shrink: 0; flex-wrap: wrap;
+            position: relative; z-index: 10;
         }
-        .header-emblem { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
+        .header-emblem {
+            width: 48px; height: 48px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
+            border: 3px solid rgba(255,255,255,0.3); transition: var(--transition);
+        }
         .header-emblem img { width: 100%; height: 100%; object-fit: cover; }
         .header-text { flex: 1; min-width: 180px; }
-        .header-title { font-size: 1.2rem; font-weight: 800; text-transform: uppercase; }
-        .header-subtitle { font-size: 0.7rem; opacity: 0.85; }
-        .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
-        .btn-icon { background: transparent; border: none; color: var(--header-text); font-size: 1.2rem; cursor: pointer; padding: 6px; border-radius: 50%; }
-        .btn-icon:hover { background: rgba(255,255,255,0.2); }
-        .btn-logout { background: rgba(255,255,255,0.2); border: 1.5px solid rgba(255,255,255,0.4); color: var(--header-text); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem; white-space: nowrap; }
-        .user-badge, .admin-badge { padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; white-space: nowrap; }
-        .user-badge { background: rgba(255,255,255,0.2); }
-        .admin-badge { background: #FFD700; color: #1A1A2E; }
-        .role-badge { padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; white-space: nowrap; cursor: pointer; border: 2px solid transparent; }
-        .leader-badge { background: #FFD700; color: #1A1A2E; }
+        .header-title { font-size: 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .header-subtitle { font-size: 0.75rem; opacity: 0.85; font-weight: 500; }
+        .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; flex-wrap: wrap; }
+        .btn-icon {
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2);
+            color: var(--header-text); font-size: 1.1rem; cursor: pointer; padding: 8px 10px;
+            border-radius: var(--radius-sm); transition: var(--transition); backdrop-filter: blur(4px);
+        }
+        .btn-icon:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
+        .btn-logout {
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+            color: var(--header-text); padding: 9px 16px; border-radius: var(--radius-xl);
+            cursor: pointer; font-weight: 600; font-size: 0.8rem; white-space: nowrap; transition: var(--transition);
+        }
+        .btn-logout:hover { background: rgba(255,255,255,0.25); }
+        .admin-badge, .role-badge {
+            padding: 7px 14px; border-radius: var(--radius-xl); font-weight: 600;
+            font-size: 0.8rem; white-space: nowrap; transition: var(--transition);
+        }
+        .admin-badge { background: #FFD700; color: #1A1A2E; box-shadow: 0 2px 8px rgba(255,215,0,0.3); }
+        .role-badge { cursor: pointer; border: 2px solid transparent; }
+        .user-badge { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.3); }
+        .leader-badge { background: #FFD700; color: #1A1A2E; border-color: #FFD700; box-shadow: 0 2px 8px rgba(255,215,0,0.3); }
+        .role-badge:hover { transform: translateY(-1px); }
 
-        .app-body { flex: 1; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 16px; }
+        .app-body { flex: 1; overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 16px; }
+        .app-body::-webkit-scrollbar { width: 6px; }
+        .app-body::-webkit-scrollbar-track { background: transparent; }
+        .app-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-        .tabs { display: none; gap: 6px; flex-wrap: wrap; border-bottom: 2px solid var(--border); }
-        .tab-select { display: block; width: 100%; padding: 12px; border-radius: 12px; border: 2px solid var(--border); font-family: var(--font); font-size: 1rem; background: var(--card-bg); color: var(--text); margin-bottom: 8px; }
-
+        .tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 2px solid var(--border); padding-bottom: 0; position: sticky; top: 0; background: var(--card-bg); z-index: 5; }
         .tab-btn {
-            padding: 10px 16px; border: none; background: transparent;
-            font-weight: 600; font-size: 0.85rem; cursor: pointer;
-            border-radius: 10px 10px 0 0; color: var(--text-light);
+            padding: 10px 18px; border: none; background: transparent;
+            font-weight: 600; font-size: 0.82rem; cursor: pointer;
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0; color: var(--text-light);
+            transition: var(--transition); position: relative;
         }
-        .tab-btn.active { background: var(--card-bg); color: var(--primary); border-bottom: 3px solid var(--primary); }
+        .tab-btn:hover { color: var(--text); background: var(--bg); }
+        .tab-btn.active { color: var(--primary); background: var(--bg); }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 3px; background: var(--primary); border-radius: 3px 3px 0 0; }
 
-        .card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 12px; }
+        .card {
+            background: var(--card-bg); border-radius: var(--radius);
+            padding: 20px; box-shadow: var(--shadow-sm); border: 1px solid var(--border);
+            margin-bottom: 12px; transition: var(--transition);
+        }
+        .card:hover { box-shadow: var(--shadow); }
 
-        .form-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; background: var(--bg); padding: 14px; border-radius: 12px; border: 1px dashed var(--border); margin-bottom: 12px; flex-direction: column; }
-        .form-group { display: flex; flex-direction: column; gap: 4px; flex: 1 1 100%; width: 100%; }
-        .form-group label { font-weight: 600; font-size: 0.7rem; text-transform: uppercase; color: var(--text-light); }
+        .form-row {
+            display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end;
+            background: var(--bg); padding: 16px; border-radius: var(--radius);
+            border: 1px dashed var(--border); margin-bottom: 12px;
+        }
+        .form-group { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 150px; }
+        .form-group label { font-weight: 700; font-size: 0.7rem; text-transform: uppercase; color: var(--text-light); letter-spacing: 0.5px; }
         .form-group input, .form-group select, .form-group textarea {
-            padding: 10px 14px; border: 2px solid var(--border); border-radius: 20px;
-            font-family: var(--font); font-size: 0.9rem; background: var(--card-bg); color: var(--text); width: 100%;
+            padding: 11px 16px; border: 2px solid var(--border); border-radius: var(--radius-xl);
+            font-family: var(--font); font-size: 0.9rem; background: var(--card-bg); color: var(--text);
+            width: 100%; transition: var(--transition);
         }
-        .btn { padding: 10px 18px; border-radius: 25px; font-weight: 700; cursor: pointer; border: none; font-family: var(--font); font-size: 0.9rem; white-space: nowrap; width: 100%; text-align: center; margin-top: 4px; }
-        .btn-primary { background: var(--primary); color: var(--btn-primary-text); }
-        .btn-danger { background: #FFEBEE; color: #C62828; border: 1px solid #FFCDD2; }
-        .btn-success { background: #4CAF50; color: #fff; }
-        .btn-warning { background: #FF9800; color: #fff; }
-        .btn-sm { padding: 4px 10px; font-size: 0.7rem; width: auto; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(212,0,42,0.1);
+        }
 
-        .table-wrapper { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+        .btn {
+            padding: 11px 20px; border-radius: var(--radius-xl); font-weight: 700;
+            cursor: pointer; border: none; font-family: var(--font); font-size: 0.9rem;
+            transition: var(--transition); display: inline-flex; align-items: center; gap: 6px;
+            white-space: nowrap;
+        }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn:active { transform: translateY(0); }
+        .btn-primary { background: var(--primary-gradient); color: var(--btn-primary-text); }
+        .btn-danger { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+        .btn-danger:hover { background: #FEE2E2; }
+        .btn-success { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+        .btn-success:hover { background: #D1FAE5; }
+        .btn-warning { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
+        .btn-sm { padding: 5px 12px; font-size: 0.75rem; border-radius: var(--radius-sm); }
+
+        .table-wrapper { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
         table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        th, td { padding: 10px 12px; border-bottom: 1px solid var(--border); text-align: left; }
-        thead { background: var(--bg); }
+        th, td { padding: 12px 16px; border-bottom: 1px solid var(--border); text-align: left; }
+        th { background: var(--bg); font-weight: 700; color: var(--text-light); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: var(--bg); }
 
-        .grade-badge { padding: 4px 10px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; display: inline-block; min-width: 40px; text-align: center; }
-        .grade-4 { background: #00BCD4; color: #fff; } .grade-3 { background: #4CAF50; color: #fff; }
-        .grade-2 { background: #FFEB3B; color: #333; } .grade-1 { background: #FF9800; color: #fff; }
-        .grade-0 { background: #F44336; color: #fff; }
-        .blurred { filter: blur(5px); user-select: none; }
+        .grade-badge {
+            padding: 5px 12px; border-radius: var(--radius-xl); font-weight: 700;
+            font-size: 0.8rem; display: inline-block; min-width: 40px; text-align: center;
+        }
+        .grade-4 { background: #E0F2FE; color: #0369A1; } .grade-3 { background: #DCFCE7; color: #15803D; }
+        .grade-2 { background: #FEF9C3; color: #A16207; } .grade-1 { background: #FFEDD5; color: #C2410C; }
+        .grade-0 { background: #FEE2E2; color: #B91C1C; }
 
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #1A1A2E; color: #fff; padding: 12px 20px; border-radius: 30px; z-index: 9999; opacity: 0; transform: translateY(20px); transition: 0.3s; font-size: 0.9rem; }
+        .search-bar {
+            width: 100%; padding: 12px 16px; border-radius: var(--radius-xl);
+            border: 2px solid var(--border); font-size: 0.95rem; margin-bottom: 12px;
+            background: var(--card-bg); color: var(--text); transition: var(--transition);
+        }
+        .search-bar:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(212,0,42,0.1); }
+
+        .post-card { background: var(--bg); border-radius: var(--radius); padding: 16px; margin-top: 10px; border: 1px solid var(--border); transition: var(--transition); }
+        .post-card:hover { box-shadow: var(--shadow-sm); }
+
+        .toast {
+            position: fixed; bottom: 24px; right: 24px; background: #1F2937; color: #fff;
+            padding: 14px 24px; border-radius: var(--radius-xl); z-index: 9999;
+            opacity: 0; transform: translateY(10px); transition: 0.3s ease;
+            font-size: 0.9rem; font-weight: 600; box-shadow: var(--shadow-lg);
+        }
         .toast.show { opacity: 1; transform: translateY(0); }
-        .toast.success { background: #2E7D32; } .toast.error { background: #C62828; }
+        .toast.success { background: #059669; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        .modal-content { background: var(--card-bg); border-radius: 16px; padding: 20px; max-width: 500px; width: 90%; box-shadow: 0 8px 30px rgba(0,0,0,0.3); color: var(--text); max-height: 80vh; overflow-y: auto; }
-
-        .sub-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
-        .sub-tab-btn {
-            padding: 8px 16px; border: none; background: var(--bg);
-            font-weight: 600; font-size: 0.8rem; cursor: pointer; border-radius: 20px;
-            color: var(--text-light);
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);
+            display: flex; align-items: center; justify-content: center; z-index: 1000;
         }
-        .sub-tab-btn.active { background: var(--primary); color: #fff; }
-
-        .chat-container { display: flex; gap: 10px; height: 60vh; }
-        .user-list { width: 35%; overflow-y: auto; border-right: 1px solid var(--border); padding-right: 8px; }
-        .user-list-item { padding: 8px; cursor: pointer; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .user-list-item:hover { background: var(--bg); }
-        .chat-area { flex: 1; display: flex; flex-direction: column; }
-        .messages-box { flex: 1; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 8px; margin-bottom: 8px; }
-        .msg { margin-bottom: 6px; }
-        .msg.mine { text-align: right; }
-        .msg-text { display: inline-block; padding: 6px 12px; border-radius: 18px; background: var(--bg); max-width: 80%; }
-        .post-card { background: var(--bg); border-radius: 12px; padding: 12px; margin-top: 8px; }
-        .gallery-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; margin: 4px; }
-
-        @media (min-width: 768px) {
-            .tabs { display: flex; }
-            .tab-select { display: none; }
-            .form-row { flex-direction: row; flex-wrap: wrap; }
-            .form-group { flex: 1 1 calc(50% - 8px); width: auto; }
-            .btn { width: auto; margin-top: 0; }
+        .modal-content {
+            background: var(--card-bg); border-radius: var(--radius-lg); padding: 24px;
+            max-width: 500px; width: 90%; box-shadow: var(--shadow-lg);
+            max-height: 80vh; overflow-y: auto; animation: modalIn 0.2s ease;
         }
-        @media (min-width: 1025px) {
-            .form-group { flex: 1 1 200px; }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .messages-box {
+            flex: 1; overflow-y: auto; border: 1px solid var(--border);
+            border-radius: var(--radius); padding: 12px; margin-bottom: 10px;
+            background: var(--bg);
+        }
+        .messages-box::-webkit-scrollbar { width: 4px; }
+        .messages-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+        .chat-group-item {
+            cursor: pointer; padding: 10px 14px; border-radius: var(--radius-sm);
+            transition: var(--transition); font-weight: 500; font-size: 0.9rem;
+        }
+        .chat-group-item:hover { background: var(--bg); }
+        .chat-group-item.active { background: var(--primary); color: #fff; }
+
+        .gallery-img { width: 120px; height: 120px; object-fit: cover; border-radius: var(--radius-sm); margin: 4px; cursor: pointer; transition: var(--transition); }
+        .gallery-img:hover { transform: scale(1.05); box-shadow: var(--shadow); }
+
+        .folder-item {
+            background: var(--bg); border-radius: var(--radius); padding: 14px;
+            cursor: pointer; display: flex; align-items: center; gap: 10px;
+            justify-content: space-between; border: 1px solid var(--border); transition: var(--transition);
+        }
+        .folder-item:hover { border-color: var(--primary); box-shadow: var(--shadow-sm); }
+
+        .file-upload-area {
+            border: 2px dashed var(--border); border-radius: var(--radius);
+            padding: 24px; text-align: center; cursor: pointer; background: var(--bg);
+            transition: var(--transition);
+        }
+        .file-upload-area:hover { border-color: var(--primary); background: rgba(212,0,42,0.02); }
+
+        .login-page-container { display: flex; flex-direction: column; gap: 16px; }
+        .login-row { display: flex; gap: 16px; flex-wrap: wrap; }
+        .login-column { flex: 1; min-width: 300px; }
+
+        @media (max-width: 768px) {
+            .app-body { padding: 10px; }
+            .tabs { gap: 2px; }
+            .tab-btn { padding: 8px 12px; font-size: 0.75rem; }
+            .card { padding: 14px; }
+            .login-row { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 <div class="app-container" id="appContainer">
     <header class="app-header">
-        <div class="header-emblem"><img src="https://static.life.ru/publications/2023/3/28/657401526268.0573-900x.jpeg" alt="Логотип"></div>
-        <div class="header-text">
-            <div class="header-title">Совет Первых Регионального отделения</div>
-            <div class="header-subtitle">Чувашская Республика</div>
-        </div>
+        <div class="header-emblem" id="headerEmblem"><img src="https://static.life.ru/publications/2023/3/28/657401526268.0573-900x.jpeg" alt="Логотип"></div>
+        <div class="header-text"><div class="header-title">Совет Первых</div><div class="header-subtitle">Чувашская Республика · Региональное отделение</div></div>
         <div class="header-actions" id="headerActions"></div>
     </header>
     <div class="app-body" id="appBody"></div>
@@ -150,1362 +237,235 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyB8uD5E5A2NOKqrNPTynsCT-RUdmSH5XSs",
-        authDomain: "rkyf-ea1a6.firebaseapp.com",
-        databaseURL: "https://rkyf-ea1a6-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "rkyf-ea1a6",
-        storageBucket: "rkyf-ea1a6.firebasestorage.app",
-        messagingSenderId: "33784384905",
-        appId: "1:33784384905:web:12dbf7356ec7f766856558"
-    };
+    const firebaseConfig = { apiKey: "AIzaSyB8uD5E5A2NOKqrNPTynsCT-RUdmSH5XSs", authDomain: "rkyf-ea1a6.firebaseapp.com", databaseURL: "https://rkyf-ea1a6-default-rtdb.europe-west1.firebasedatabase.app", projectId: "rkyf-ea1a6", storageBucket: "rkyf-ea1a6.firebasestorage.app", messagingSenderId: "33784384905", appId: "1:33784384905:web:12dbf7356ec7f766856558" };
+    const app = initializeApp(firebaseConfig), db = getDatabase(app);
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    let DISTRICTS = ['город Чебоксары','город Новочебоксарск','Алатырский муниципальный округ','Аликовский муниципальный округ','Батыревский муниципальный округ','Вурнарский муниципальный округ','Ибресинский муниципальный округ','Канашский муниципальный округ','Козловский муниципальный округ','Комсомольский муниципальный округ','Красноармейский муниципальный округ','Красночетайский муниципальный округ','Мариинско-Посадский муниципальный округ','Моргаушский муниципальный округ','Порецкий муниципальный округ','Урмарский муниципальный округ','Цивильский муниципальный округ','Чебоксарский муниципальный округ','Шемуршинский муниципальный округ','Шумерлинский муниципальный округ','Ядринский муниципальный округ','Яльчикский муниципальный округ','Янтиковский муниципальный округ'];
+    let DISTRICTS = ['город Чебоксары','город Новочебоксарск','Алатырский','Аликовский','Батыревский','Вурнарский','Ибресинский','Канашский','Козловский','Комсомольский','Красноармейский','Красночетайский','Мариинско-Посадский','Моргаушский','Порецкий','Урмарский','Цивильский','Чебоксарский','Шемуршинский','Шумерлинский','Ядринский','Яльчикский','Янтиковский'];
+    let POSITIONS = ['Участник','Лидер направления','Тренер','Председатель','Заместитель председателя','Секретарь','Координатор','Наставник','Куратор','Модератор'];
     
-    const cache = {
-        users: [], grades: [], news: [], tasks: [],
-        taskCompletions: [], feedback: [], disputes: [],
-        notifications: [], settings: { theme: 'light', primaryColor: 'red' },
-        messages: [], announcements: [], districts: [], directionChatMembers: []
-    };
-
-    const DB_PATHS = {
-        users: 'users', grades: 'grades', news: 'news', tasks: 'tasks',
-        taskCompletions: 'taskCompletions', feedback: 'feedback',
-        disputes: 'disputes', notifications: 'notifications', settings: 'settings',
-        messages: 'messages', announcements: 'announcements', districts: 'districts',
-        directionChatMembers: 'directionChatMembers'
-    };
-
+    const cache = { users: [], grades: [], news: [], tasks: [], taskCompletions: [], feedback: [], disputes: [], notifications: [], settings: { theme: 'light', primaryColor: 'red', headerImage: '' }, messages: [], announcements: [], generalChat: [], positions: [], directionChatMembers: [], chatGroups: [], mediaFolders: [], mediaFiles: [] };
+    const DB_PATHS = { users: 'users', grades: 'grades', news: 'news', tasks: 'tasks', taskCompletions: 'taskCompletions', feedback: 'feedback', disputes: 'disputes', notifications: 'notifications', settings: 'settings', messages: 'messages', announcements: 'announcements', generalChat: 'generalChat', positions: 'positions', directionChatMembers: 'directionChatMembers', chatGroups: 'chatGroups', mediaFolders: 'mediaFolders', mediaFiles: 'mediaFiles' };
     const DIRECTIONS = ['Расскажи о главном!','Береги планету!','Благо твори!','Учись и познавай!','Умей дружить!','Открывай страну!','Служи Отечеству!','Найди призвание!','Достигай и побеждай!','Дерзай и открывай!'];
-    const GRADE_CATEGORIES = ['Работа в рабочих группах','Мероприятия','Собрания','Очные встречи','Индивидуальная помощь','Работа в направлении'];
+    const GRADE_CATEGORIES = ['Работа в группах','Мероприятия','Собрания','Очные встречи','Индивидуальная помощь','Работа в направлении'];
 
-    const appBody = document.getElementById('appBody');
-    const headerActions = document.getElementById('headerActions');
-    const toast = document.getElementById('toast');
-
-    function showToast(msg, type='') {
-        toast.textContent = msg; toast.className = 'toast ' + type + ' show';
-        clearTimeout(toast._timeout);
-        toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
-    }
+    const appBody = document.getElementById('appBody'), headerActions = document.getElementById('headerActions'), toastEl = document.getElementById('toast');
+    function showToast(msg, type='') { toastEl.textContent = msg; toastEl.className = 'toast ' + type + ' show'; clearTimeout(toastEl._timeout); toastEl._timeout = setTimeout(() => toastEl.classList.remove('show'), 3000); }
     function escapeHTML(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
     function genId() { return Date.now() + '_' + Math.random().toString(36).substr(2,6); }
-    function formatDate(iso) {
-        const d = new Date(iso);
-        return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-    }
+    function formatDate(iso) { const d = new Date(iso); return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
+    async function loadCache(key) { const snap = await get(ref(db, DB_PATHS[key])); return snap.exists() ? snap.val() : null; }
+    async function saveCache(key, value) { cache[key] = value; await set(ref(db, DB_PATHS[key]), value).catch(e => console.warn(e)); }
 
-    async function loadCache(key) {
-        const snap = await get(ref(db, DB_PATHS[key]));
-        return snap.exists() ? snap.val() : null;
-    }
-    async function saveCache(key, value) {
-        cache[key] = value;
-        await set(ref(db, DB_PATHS[key]), value).catch(e => console.warn('Firebase save error:', e));
-    }
-
-    function getUsers() {
-        cache.users.forEach(u => {
-            if (!u.leaderDirections) u.leaderDirections = [];
-            if (!u.fullName) u.fullName = '';
-            if (!u.district) u.district = '';
-            if (!u.email) u.email = '';
-            if (!u.photoURL) u.photoURL = '';
-            if (!u.socialLinks) u.socialLinks = { tg: '', vk: '', max: '' };
-            if (!u.posts) u.posts = [];
-        });
-        return cache.users;
-    }
+    function getUsers() { cache.users.forEach(u => { if (!u.leaderDirections) u.leaderDirections = []; if (!u.fullName) u.fullName = ''; if (!u.position) u.position = 'Участник'; if (!u.activated) u.activated = false; if (!u.posts) u.posts = []; if (!u.email) u.email = ''; if (!u.photoURL) u.photoURL = ''; if (!u.socialLinks) u.socialLinks = { tg: '', vk: '', max: '' }; if (!u.district) u.district = ''; }); return cache.users; }
     async function saveUsers(u) { await saveCache('users', u); }
-    function getGrades() { return cache.grades; }
-    async function saveGrades(g) { await saveCache('grades', g); }
-    function getNews() { return cache.news; }
-    async function saveNews(n) { await saveCache('news', n); }
-    function getTasks() { return cache.tasks; }
-    async function saveTasks(t) { await saveCache('tasks', t); }
-    function getTaskCompletions() { return cache.taskCompletions; }
-    async function saveTaskCompletions(tc) { await saveCache('taskCompletions', tc); }
-    function getFeedback() { return cache.feedback; }
-    async function saveFeedback(f) { await saveCache('feedback', f); }
-    function getDisputes() { return cache.disputes; }
-    async function saveDisputes(d) { await saveCache('disputes', d); }
-    function getNotifications() { return cache.notifications; }
-    async function saveNotifications(n) { await saveCache('notifications', n); }
-    function getSettings() { return cache.settings; }
-    async function saveSettings(s) { await saveCache('settings', s); }
-    function getMessages() { return cache.messages; }
-    async function saveMessages(m) { await saveCache('messages', m); }
-    function getAnnouncements() { return cache.announcements; }
-    async function saveAnnouncements(a) { await saveCache('announcements', a); }
-    function getDirectionChatMembers() { return cache.directionChatMembers; }
-    async function saveDirectionChatMembers(d) { await saveCache('directionChatMembers', d); }
+    function getGrades() { return cache.grades; } async function saveGrades(g) { await saveCache('grades', g); }
+    function getNews() { return cache.news; } async function saveNews(n) { await saveCache('news', n); }
+    function getTasks() { return cache.tasks; } async function saveTasks(t) { await saveCache('tasks', t); }
+    function getTaskCompletions() { return cache.taskCompletions; } async function saveTaskCompletions(tc) { await saveCache('taskCompletions', tc); }
+    function getFeedback() { return cache.feedback; } async function saveFeedback(f) { await saveCache('feedback', f); }
+    function getDisputes() { return cache.disputes; } async function saveDisputes(d) { await saveCache('disputes', d); }
+    function getNotifications() { return cache.notifications; } async function saveNotifications(n) { await saveCache('notifications', n); }
+    function getGeneralChat() { return cache.generalChat; } async function saveGeneralChat(g) { await saveCache('generalChat', g); }
+    function getPositions() { return cache.positions.length ? cache.positions : POSITIONS; } async function savePositions(p) { await saveCache('positions', p); }
+    function getSettings() { return cache.settings; } async function saveSettings(s) { await saveCache('settings', s); }
+    function getMessages() { return cache.messages; } async function saveMessages(m) { await saveCache('messages', m); }
+    function getDirectionChatMembers() { return cache.directionChatMembers; } async function saveDirectionChatMembers(d) { await saveCache('directionChatMembers', d); }
+    function getChatGroups() { return cache.chatGroups; } async function saveChatGroups(g) { await saveCache('chatGroups', g); }
+    function getMediaFolders() { return cache.mediaFolders; } async function saveMediaFolders(m) { await saveCache('mediaFolders', m); }
+    function getMediaFiles() { return cache.mediaFiles; } async function saveMediaFiles(m) { await saveCache('mediaFiles', m); }
     function getSession() { return JSON.parse(localStorage.getItem('session') || 'null'); }
     function saveSession(s) { s ? localStorage.setItem('session', JSON.stringify(s)) : localStorage.removeItem('session'); }
-
-    function applySettings(s) {
-        document.body.classList.toggle('theme-dark', s.theme === 'dark');
-        document.body.classList.remove('primary-red','primary-blue','primary-white');
-        document.body.classList.add('primary-' + s.primaryColor);
-    }
+    function applySettings(s) { document.body.classList.toggle('theme-dark', s.theme === 'dark'); document.body.classList.remove('primary-red','primary-blue','primary-white'); document.body.classList.add('primary-' + s.primaryColor); }
 
     function createInitialUsers() {
-        const admins = [
-            'Лидер01Первый','Наставник02Второй','Капитан03Третий','Организатор04Четвертый','Вдохновитель05Пятый',
-            'Первопроходец06Шестой','Мастер07Седьмой','Энтузиаст08Восьмой','Творец09Девятый','Созидатель10Десятый',
-            'Стратег11Одиннадцатый','Аналитик12Двенадцатый','Координатор13Тринадцатый','Модератор14Четырнадцатый','Куратор15Пятнадцатый'
-        ];
+        const admins = ['Лидер01Первый','Наставник02Второй','Капитан03Третий','Организатор04Четвертый','Вдохновитель05Пятый','Первопроходец06Шестой','Мастер07Седьмой','Энтузиаст08Восьмой','Творец09Девятый','Созидатель10Десятый','Стратег11','Аналитик12','Координатор13','Модератор14','Куратор15'];
         const users = [];
-        admins.forEach((p,i) => users.push({ id: i, login: 'admin'+String(i+1).padStart(2,'0'), password: p, name: 'Администратор '+(i+1), role: 'admin', fullName: '', joinDate: '', district: '', leaderDirections: [], email: '', photoURL: '', socialLinks: {tg:'',vk:'',max:''}, posts: [] }));
-        for (let i=1; i<=150; i++) {
-            const num = String(i).padStart(3,'0');
-            users.push({ id: i+15, login: 'участник'+num, password: 'пароль'+num, name: 'Участник '+num, role: 'user', fullName: '', joinDate: '', district: '', leaderDirections: [], email: '', photoURL: '', socialLinks: {tg:'',vk:'',max:''}, posts: [] });
-        }
+        admins.forEach((p,i) => users.push({ id: i, login: 'admin'+String(i+1).padStart(2,'0'), password: p, name: 'Администратор '+(i+1), role: 'admin', fullName: '', position: 'Администратор', activated: true, leaderDirections: [], posts: [], email: '', photoURL: '', socialLinks: {tg:'',vk:'',max:''}, district: '' }));
+        for (let i=1; i<=150; i++) { const num = String(i).padStart(3,'0'); users.push({ id: i+15, login: 'участник'+num, password: 'пароль'+num, name: 'Участник '+num, role: 'user', fullName: '', position: 'Участник', activated: false, leaderDirections: [], posts: [], email: '', photoURL: '', socialLinks: {tg:'',vk:'',max:''}, district: '' }); }
         return users;
     }
 
-    async function addMissingUsers() {
-        const users = getUsers();
-        const existingLogins = new Set(users.map(u => u.login));
-        const existingIds = new Set(users.map(u => u.id));
-        
-        let addedAdmins = 0;
-        for (let i = 0; i < 15; i++) {
-            const login = 'admin' + String(i+1).padStart(2,'0');
-            if (!existingLogins.has(login)) {
-                const admins = [
-                    'Лидер01Первый','Наставник02Второй','Капитан03Третий','Организатор04Четвертый','Вдохновитель05Пятый',
-                    'Первопроходец06Шестой','Мастер07Седьмой','Энтузиаст08Восьмой','Творец09Девятый','Созидатель10Десятый',
-                    'Стратег11Одиннадцатый','Аналитик12Двенадцатый','Координатор13Тринадцатый','Модератор14Четырнадцатый','Куратор15Пятнадцатый'
-                ];
-                const newId = existingIds.size > 0 ? Math.max(...existingIds) + 1 : i;
-                users.push({ id: newId, login: login, password: admins[i], name: 'Администратор '+(i+1), role: 'admin', fullName: '', joinDate: '', district: '', leaderDirections: [], email: '', photoURL: '', socialLinks: {tg:'',vk:'',max:''}, posts: [] });
-                existingLogins.add(login);
-                existingIds.add(newId);
-                addedAdmins++;
-            }
-        }
-        
-        let addedUsers = 0;
-        for (let i = 1; i <= 150; i++) {
-            const num = String(i).padStart(3,'0');
-            const login = 'участник' + num;
-            if (!existingLogins.has(login)) {
-                const newId = Math.max(...existingIds) + 1;
-                users.push({ id: newId, login: login, password: 'пароль'+num, name: 'Участник '+num, role: 'user', fullName: '', joinDate: '', district: '', leaderDirections: [], email: '', photoURL: '', socialLinks: {tg:'',vk:'',max:''}, posts: [] });
-                existingLogins.add(login);
-                existingIds.add(newId);
-                addedUsers++;
-            }
-        }
-        
-        if (addedAdmins > 0 || addedUsers > 0) {
-            await saveUsers(users);
-            showToast(`✅ Добавлено: ${addedAdmins} админов, ${addedUsers} участников`, 'success');
-        } else {
-            showToast('ℹ️ Все пользователи уже существуют (15 админов, 150 участников)', 'success');
-        }
-        
-        return { addedAdmins, addedUsers };
-    }
+    async function addMissingUsers() { const users = getUsers(); const existingLogins = new Set(users.map(u => u.login)); const existingIds = new Set(users.map(u => u.id)); let addedAdmins = 0, addedUsers = 0; const admins = ['Лидер01Первый','Наставник02Второй','Капитан03Третий','Организатор04Четвертый','Вдохновитель05Пятый','Первопроходец06Шестой','Мастер07Седьмой','Энтузиаст08Восьмой','Творец09Девятый','Созидатель10Десятый','Стратег11','Аналитик12','Координатор13','Модератор14','Куратор15']; for (let i = 0; i < 15; i++) { const login = 'admin' + String(i+1).padStart(2,'0'); if (!existingLogins.has(login)) { const newId = Math.max(...existingIds, 0) + 1; users.push({ id: newId, login, password: admins[i], name: 'Администратор '+(i+1), role: 'admin', fullName: '', position: 'Администратор', activated: true, leaderDirections: [], posts: [], email: '', photoURL: '', socialLinks: {tg:'',vk:'',max:''}, district: '' }); existingLogins.add(login); existingIds.add(newId); addedAdmins++; } } for (let i = 1; i <= 150; i++) { const num = String(i).padStart(3,'0'); const login = 'участник' + num; if (!existingLogins.has(login)) { const newId = Math.max(...existingIds, 0) + 1; users.push({ id: newId, login, password: 'пароль'+num, name: 'Участник '+num, role: 'user', fullName: '', position: 'Участник', activated: false, leaderDirections: [], posts: [], email: '', photoURL: '', socialLinks: {tg:'',vk:'',max:''}, district: '' }); existingLogins.add(login); existingIds.add(newId); addedUsers++; } } if (addedAdmins > 0 || addedUsers > 0) { await saveUsers(users); showToast(`✅ Добавлено: ${addedAdmins} админов, ${addedUsers} участников`, 'success'); } else { showToast('ℹ️ Все уже существуют', 'success'); } return { addedAdmins, addedUsers }; }
 
-    async function initializeData() {
-        for (const key of Object.keys(DB_PATHS)) {
-            const data = await loadCache(key);
-            if (data) {
-                cache[key] = data;
-            } else {
-                if (key === 'users') {
-                    const users = createInitialUsers();
-                    await saveCache('users', users);
-                } else if (key === 'districts') {
-                    await saveCache('districts', DISTRICTS);
-                } else if (key === 'settings') {
-                    await saveCache('settings', { theme: 'light', primaryColor: 'red' });
-                } else {
-                    await saveCache(key, []);
-                }
-            }
-        }
-        if (cache.districts?.length) DISTRICTS = cache.districts;
-    }
+    async function initializeData() { for (const key of Object.keys(DB_PATHS)) { const data = await loadCache(key); if (data) cache[key] = data; else if (key === 'users') await saveCache('users', createInitialUsers()); else if (key === 'positions') await saveCache('positions', POSITIONS); else if (key === 'settings') await saveCache('settings', { theme: 'light', primaryColor: 'red', headerImage: '' }); else await saveCache(key, []); } if (cache.positions?.length) POSITIONS = cache.positions; }
 
     function renderLogin(error='') {
         renderHeader(null);
-        appBody.innerHTML = `
-            <div style="display:flex;align-items:center;justify-content:center;flex:1;">
-                <div class="card" style="max-width:440px;width:100%;text-align:center;">
-                    <h2>Вход</h2>
-                    <form id="loginForm">
-                        <div class="form-group"><label>Логин</label><input type="text" id="loginInput" required></div>
-                        <div class="form-group" style="position:relative;"><label>Пароль</label><input type="password" id="passInput" required><button type="button" class="password-toggle" id="togglePass">👁️</button></div>
-                        <button class="btn btn-primary" style="width:100%;">Войти</button>
-                        <div id="loginError" style="color:red;">${escapeHTML(error)}</div>
-                    </form>
-                </div>
-            </div>`;
-        document.getElementById('togglePass').onclick = () => {
-            const p = document.getElementById('passInput');
-            p.type = p.type === 'password' ? 'text' : 'password';
-            document.getElementById('togglePass').textContent = p.type === 'password' ? '👁️' : '🙈';
-        };
-        document.getElementById('loginForm').onsubmit = e => {
-            e.preventDefault();
-            const login = document.getElementById('loginInput').value.trim();
-            const pass = document.getElementById('passInput').value.trim();
-            const user = getUsers().find(u => u.login === login && u.password === pass);
-            if (user) { saveSession({ userId: user.id, role: user.role, activeRole: 'user' }); renderDashboard(); showToast('✅ Добро пожаловать!', 'success'); }
-            else document.getElementById('loginError').textContent = '❌ Неверные данные';
-        };
+        const news = getNews().sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+        const team = getUsers();
+        appBody.innerHTML = `<div class="login-page-container"><div class="login-row"><div class="login-column"><div class="card" style="text-align:center;"><h2 style="margin-bottom:16px;">👋 Вход в систему</h2><form id="loginForm"><div class="form-group"><label>Логин</label><input type="text" id="loginInput" required placeholder="Введите логин"></div><div class="form-group"><label>Пароль</label><input type="password" id="passInput" required placeholder="Введите пароль"></div><button class="btn btn-primary" style="width:100%;margin-top:8px;">Войти</button><div id="loginError" style="color:var(--danger);margin-top:8px;">${escapeHTML(error)}</div></form><div style="margin-top:16px;"><button class="btn btn-sm" onclick="window._showSupport()" style="background:var(--bg);">📞 Техподдержка</button></div></div></div><div class="login-column"><div class="card"><h3 style="margin-bottom:12px;">👥 Наша команда</h3><p style="color:var(--text-light);font-size:0.8rem;">Всего: ${team.length} · Активировано: ${team.filter(u => u.activated || u.role === 'admin').length}</p><div style="max-height:200px;overflow-y:auto;">${team.filter(u => u.activated || u.role === 'admin').map(u => `<div style="padding:6px 0;border-bottom:1px solid var(--border);"><strong>${escapeHTML(u.fullName||u.name)}</strong><br><small style="color:var(--text-light);">${escapeHTML(u.position||'Участник')} ${u.district ? '· '+escapeHTML(u.district) : ''}</small></div>`).join('') || '<p style="color:var(--text-lighter);">Нет активированных участников</p>'}</div></div><div class="card"><h3 style="margin-bottom:12px;">📰 Новости</h3>${news.map(n => `<div style="padding:6px 0;border-bottom:1px solid var(--border);"><strong>${escapeHTML(n.title)}</strong><p style="font-size:0.8rem;color:var(--text-light);">${escapeHTML(n.content?.substring(0,80)||'')}…</p><small style="color:var(--text-lighter);">${formatDate(n.date)}</small></div>`).join('') || '<p style="color:var(--text-lighter);">Нет новостей</p>'}</div></div></div></div>`;
+        document.getElementById('loginForm').onsubmit = e => { e.preventDefault(); const login = document.getElementById('loginInput').value.trim(); const pass = document.getElementById('passInput').value.trim(); const user = getUsers().find(u => u.login === login && u.password === pass); if (user) { if (!user.activated && user.role === 'user') { showToast('❌ Аккаунт не активирован', 'error'); return; } saveSession({ userId: user.id, role: user.role, activeRole: 'user' }); renderDashboard(); } else document.getElementById('loginError').textContent = '❌ Неверные данные'; };
     }
 
+    window._showSupport = function() { const modal = document.createElement('div'); modal.className = 'modal-overlay'; modal.innerHTML = `<div class="modal-content"><h3>📞 Техподдержка</h3><p style="margin:8px 0;">VK: <a href="https://vk.com/pavelpetrov2009" target="_blank">@pavelpetrov2009</a></p><p style="margin:8px 0;">Telegram: <a href="https://t.me/PavelStalll" target="_blank">@PavelStalll</a></p><p style="margin:8px 0;">Max: <a href="https://max.ru/u/f9LHodD0cOLhbS6mH2roH6wbsOi6jnJHBBAbz8dU5z2DeRxIrKhTWSIlPb4" target="_blank">Перейти</a></p><button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()">Закрыть</button></div>`; document.body.appendChild(modal); modal.onclick = e => { if(e.target === modal) modal.remove(); }; };
+    window._openGlobalSearch = function() { const modal = document.createElement('div'); modal.className = 'modal-overlay'; modal.innerHTML = `<div class="modal-content"><h3>🔍 Поиск</h3><input class="search-bar" id="globalSearchInput" placeholder="Имя, должность или логин..." oninput="window._globalSearch()"><div id="globalSearchResults" style="max-height:300px;overflow-y:auto;"></div><button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()">Закрыть</button></div>`; document.body.appendChild(modal); modal.onclick = e => { if(e.target === modal) modal.remove(); }; window._globalSearch = function() { const q = document.getElementById('globalSearchInput')?.value.toLowerCase() || ''; const users = getUsers().filter(u => (u.fullName||u.name).toLowerCase().includes(q) || (u.position||'').toLowerCase().includes(q) || (u.login||'').toLowerCase().includes(q)); document.getElementById('globalSearchResults').innerHTML = users.length ? users.map(u => `<div class="card" style="cursor:pointer;padding:10px;" onclick="window._viewProfile(${u.id})"><strong>${escapeHTML(u.fullName||u.name)}</strong> · ${escapeHTML(u.position||'Участник')} <small>(${u.login})</small></div>`).join('') : '<p>Ничего не найдено</p>'; }; window._globalSearch(); };
+    window._viewProfile = function(userId) { const user = getUsers().find(u => u.id === userId); if (!user) return; const modal = document.createElement('div'); modal.className = 'modal-overlay'; modal.innerHTML = `<div class="modal-content"><h3>👤 ${escapeHTML(user.fullName||user.name)}</h3><p>Должность: <strong>${escapeHTML(user.position||'Участник')}</strong></p><p>Округ: ${escapeHTML(user.district||'—')}</p>${user.email ? `<p>Email: ${escapeHTML(user.email)}</p>` : ''}${user.socialLinks?.tg ? `<p>TG: ${escapeHTML(user.socialLinks.tg)}</p>` : ''}${user.socialLinks?.vk ? `<p>VK: ${escapeHTML(user.socialLinks.vk)}</p>` : ''}<button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()">Закрыть</button></div>`; document.body.appendChild(modal); modal.onclick = e => { if(e.target === modal) modal.remove(); }; };
+
     function renderHeader(session) {
-        const settingsBtn = '<button class="btn-icon" onclick="window._openSettingsModal()">⚙️</button>';
-        if (!session) { headerActions.innerHTML = settingsBtn; return; }
+        const settingsBtn = '<button class="btn-icon" onclick="window._openSettingsModal()" title="Настройки">⚙️</button>';
+        const searchBtn = '<button class="btn-icon" onclick="window._openGlobalSearch()" title="Поиск">🔍</button>';
+        if (!session) { headerActions.innerHTML = searchBtn + settingsBtn; return; }
         const user = getUsers().find(u => u.id === session.userId);
-        if (!user) { headerActions.innerHTML = settingsBtn; return; }
+        if (!user) { headerActions.innerHTML = searchBtn + settingsBtn; return; }
         let roleHtml = '';
-        if (user.role === 'admin') {
-            roleHtml = '<span class="admin-badge">👑 Администратор</span>';
-        } else {
-            const isActiveLeader = session.activeRole === 'leader' && user.leaderDirections?.length;
-            roleHtml = `<span class="role-badge ${isActiveLeader ? 'leader-badge' : 'user-badge'}" id="switchRoleBtn" style="cursor:pointer;">${isActiveLeader ? '🎯 Лидер' : '👤 Участник'}</span>`;
-        }
-        headerActions.innerHTML = roleHtml + '<button class="btn-logout" onclick="window._logout()">🚪 Выйти</button>' + settingsBtn;
+        if (user.role === 'admin') roleHtml = '<span class="admin-badge">👑 Админ</span>';
+        else { const isLeader = session.activeRole === 'leader' && user.leaderDirections?.length; roleHtml = `<span class="role-badge ${isLeader ? 'leader-badge' : 'user-badge'}" id="switchRoleBtn">${isLeader ? '🎯 Лидер' : '👤 '+escapeHTML(user.position||'Участник')}</span>`; }
+        headerActions.innerHTML = searchBtn + roleHtml + '<button class="btn-logout" onclick="window._logout()">🚪 Выйти</button>' + settingsBtn;
         const switchBtn = document.getElementById('switchRoleBtn');
-        if (switchBtn) {
-            switchBtn.onclick = () => {
-                const sess = getSession();
-                sess.activeRole = sess.activeRole === 'leader' ? 'user' : 'leader';
-                saveSession(sess); renderDashboard(); showToast(sess.activeRole === 'leader' ? '🎯 Режим лидера' : '👤 Режим участника', 'success');
-            };
-        }
+        if (switchBtn && user.leaderDirections?.length) { switchBtn.onclick = () => { const sess = getSession(); sess.activeRole = sess.activeRole === 'leader' ? 'user' : 'leader'; saveSession(sess); renderDashboard(); }; }
+        const settings = getSettings();
+        if (settings.headerImage) document.getElementById('headerEmblem').querySelector('img').src = settings.headerImage;
     }
 
     function renderDashboard() {
-        const session = getSession();
-        if (!session) return renderLogin();
-        const user = getUsers().find(u => u.id === session.userId);
-        if (!user) return renderLogin();
+        const session = getSession(); if (!session) return renderLogin();
+        const user = getUsers().find(u => u.id === session.userId); if (!user) return renderLogin();
         renderHeader(session);
-
         const isLeader = user.leaderDirections?.length && session.activeRole === 'leader';
-        let tabs = [];
-        if (user.role === 'admin') {
-            tabs = ['📊 Оценки','📰 Новости','📋 Задания','💬 Обратная связь','📈 Сводка','👥 Пользователи','⚠️ Оспаривания','🏙️ Округа','👤 Профиль','💬 Сообщения'];
-        } else if (isLeader) {
-            tabs = ['🎯 Лидерство','📰 Новости','📋 Задания','💬 Обратная связь','💬 Чат направления','👤 Профиль','💬 Сообщения'];
-        } else {
-            tabs = ['📊 Оценки','📰 Новости','📋 Задания','💬 Обратная связь','🏆 Рейтинг','👤 Профиль','💬 Сообщения'];
-        }
+        let tabs = ['📋 Лента','👥 Команда','💬 Чаты','📰 Новости','💬 Связь','📸 Медиа'];
+        if (user.role === 'admin') tabs.push('📊 Оценки','📋 Задания','👥 Участники','🏙️ Округа','⚠️ Споры','👤 Профиль');
+        else if (isLeader) tabs.push('🎯 Лидерство','📊 Оценки','📋 Задания','💬 Чат направления','👤 Профиль');
+        else tabs.push('📊 Оценки','📋 Задания','👤 Профиль');
 
-        appBody.innerHTML = `
-            <select class="tab-select" id="tabSelect">${tabs.map((t,i) => `<option value="${i}">${t}</option>`).join('')}</select>
-            <div class="tabs" id="tabNav">${tabs.map((t,i) => `<button class="tab-btn" data-tab="${i}">${t}</button>`).join('')}</div>
-            <div class="tab-content" id="tabContent"></div>`;
-
-        const select = document.getElementById('tabSelect');
+        appBody.innerHTML = `<div class="tabs" id="tabNav">${tabs.map((t,i) => `<button class="tab-btn" data-tab="${i}">${t}</button>`).join('')}</div><div class="tab-content" id="tabContent"></div>`;
         const btns = document.querySelectorAll('.tab-btn');
-
-        function switchTab(idx) {
-            btns.forEach((b,i) => b.classList.toggle('active', i===idx));
-            if (select) select.value = idx;
-            const content = document.getElementById('tabContent');
-            const tabName = tabs[idx];
-            if (tabName.includes('Оценки')) content.innerHTML = renderGradesTab();
-            else if (tabName.includes('Новости')) content.innerHTML = renderNewsTab();
-            else if (tabName.includes('Задания')) content.innerHTML = renderTasksTab();
-            else if (tabName.includes('Обратная связь')) content.innerHTML = renderFeedbackTab();
-            else if (tabName.includes('Сводка')) content.innerHTML = renderSummaryTab();
-            else if (tabName.includes('Пользователи')) content.innerHTML = renderUsersTab();
-            else if (tabName.includes('Оспаривания')) content.innerHTML = renderDisputesTab();
-            else if (tabName.includes('Округа')) content.innerHTML = renderDistrictsTab();
-            else if (tabName.includes('Рейтинг')) content.innerHTML = renderPublicRating();
-            else if (tabName.includes('Лидерство')) content.innerHTML = renderLeaderTab();
-            else if (tabName.includes('Чат направления')) content.innerHTML = renderDirectionChatTab();
-            else if (tabName.includes('Профиль')) content.innerHTML = renderProfileTab();
-            else if (tabName.includes('Сообщения')) content.innerHTML = renderMessagesTab();
-            bindTabEvents(idx);
-        }
-
-        select?.addEventListener('change', () => switchTab(parseInt(select.value)));
-        btns.forEach(b => b.addEventListener('click', () => switchTab(parseInt(b.dataset.tab))));
-        switchTab(0);
+        function switchTab(idx) { btns.forEach((b,i) => b.classList.toggle('active', i===idx)); const tabName = tabs[idx]; const content = document.getElementById('tabContent'); if (tabName.includes('Лента')) content.innerHTML = renderFeedTab(); else if (tabName.includes('Команда')) content.innerHTML = renderTeamTab(); else if (tabName.includes('Чаты')) content.innerHTML = renderChatsTab(); else if (tabName.includes('Новости')) content.innerHTML = renderNewsTab(); else if (tabName.includes('Связь')) content.innerHTML = renderFeedbackTab(); else if (tabName.includes('Медиа')) content.innerHTML = renderMediaTab(); else if (tabName.includes('Оценки')) content.innerHTML = renderGradesTab(); else if (tabName.includes('Задания')) content.innerHTML = renderTasksTab(); else if (tabName.includes('Участники')) content.innerHTML = renderUsersTab(); else if (tabName.includes('Округа')) content.innerHTML = renderDistrictsTab(); else if (tabName.includes('Споры')) content.innerHTML = renderDisputesTab(); else if (tabName.includes('Лидерство')) content.innerHTML = renderLeaderTab(); else if (tabName.includes('Чат направления')) content.innerHTML = renderDirectionChatTab(); else if (tabName.includes('Профиль')) content.innerHTML = renderProfileTab(); bindTabEvents(idx); }
+        btns.forEach(b => b.addEventListener('click', () => switchTab(parseInt(b.dataset.tab)))); switchTab(0);
         if (user.role === 'user') checkUnseenNotifications(session.userId);
     }
 
-    // ====== ОЦЕНКИ ======
-    function renderGradesTab() {
-        const session = getSession();
-        const user = getUsers().find(u => u.id === session.userId);
-        const allGrades = getGrades();
+    // ====== ЛЕНТА ======
+    function renderFeedTab() { const users = getUsers().filter(u => u.activated || u.role === 'admin'); const posts = users.flatMap(u => (u.posts || []).map(p => ({ ...p, author: u }))).sort((a,b) => new Date(b.date) - new Date(a.date)); return `<div class="card"><h3>📋 Лента постов</h3><input class="search-bar" id="feedSearch" placeholder="🔍 Поиск по постам..." oninput="window._searchFeed()"><div id="feedPosts">${posts.map(p => `<div class="post-card"><strong>${escapeHTML(p.author.fullName||p.author.name)}</strong> <small style="color:var(--text-light);">${escapeHTML(p.author.position||'')}</small><p style="margin-top:4px;">${escapeHTML(p.text)}</p><small style="color:var(--text-lighter);">${formatDate(p.date)}</small></div>`).join('') || '<p style="color:var(--text-lighter);">Нет постов</p>'}</div></div>`; }
+    window._searchFeed = function() { const q = document.getElementById('feedSearch')?.value.toLowerCase() || ''; const users = getUsers().filter(u => u.activated || u.role === 'admin'); const posts = users.flatMap(u => (u.posts || []).map(p => ({ ...p, author: u }))).filter(p => p.text.toLowerCase().includes(q) || (p.author.fullName||p.author.name).toLowerCase().includes(q)).sort((a,b) => new Date(b.date) - new Date(a.date)); document.getElementById('feedPosts').innerHTML = posts.map(p => `<div class="post-card"><strong>${escapeHTML(p.author.fullName||p.author.name)}</strong> <small style="color:var(--text-light);">${escapeHTML(p.author.position||'')}</small><p style="margin-top:4px;">${escapeHTML(p.text)}</p><small style="color:var(--text-lighter);">${formatDate(p.date)}</small></div>`).join('') || '<p style="color:var(--text-lighter);">Ничего не найдено</p>'; };
 
-        if (user.role === 'admin') {
-            const users = getUsers().filter(u => u.role === 'user');
-            const selId = users.length ? users[0].id : null;
-            const grades = allGrades.filter(g => g.userId === selId).sort((a,b)=>new Date(b.date)-new Date(a.date));
-            return `
-            <div class="card"><div class="card-header">👥 Участник: <select id="gradeUserSelect">${users.map(u => `<option value="${u.id}">${escapeHTML(u.fullName||u.name)} (${u.login})</option>`).join('')}</select></div></div>
-            <div class="card"><div class="card-header">➕ Выставить оценку (0-4)</div>
-                <form id="addGradeForm" class="form-row">
-                    <div class="form-group"><label>Категория</label><select id="gradeCategory">${GRADE_CATEGORIES.map(c => `<option>${c}</option>`).join('')}</select></div>
-                    <div class="form-group"><label>Оценка</label><select id="gradeVal">${[4,3,2,1,0].map(v=>`<option value="${v}">${v}</option>`).join('')}</select></div>
-                    <div class="form-group"><label>Дата</label><input type="date" id="gradeDate" value="${new Date().toISOString().split('T')[0]}"></div>
-                    <div class="form-group" style="flex:1;"><label>Описание</label><input id="gradeDesc" required></div>
-                    <button type="submit" class="btn btn-primary">✅ Выставить</button>
-                </form>
-            </div>
-            <div class="card"><div class="card-header">📋 Оценки</div>
-            ${grades.length ? `<div class="table-wrapper"><table><thead><tr><th>№</th><th>Категория</th><th>Оценка</th><th>Описание</th><th>Дата</th><th>Действие</th></tr></thead><tbody>
-            ${grades.map((g,i)=>`<tr><td>${i+1}</td><td>${escapeHTML(g.category||'')}</td><td><span class="grade-badge grade-${g.grade}">${g.grade}</span></td><td>${escapeHTML(g.description)}</td><td>${formatDate(g.date)}</td><td><button class="btn btn-sm" onclick="window._editGrade('${g.id}')">✏️</button> <button class="btn btn-danger btn-sm" data-gradeid="${g.id}">🗑</button></td></tr>`).join('')}
-            </tbody></table></div>` : '<div class="empty-state">Нет оценок</div>'}
-            </div>`;
-        } else {
-            const myGrades = allGrades.filter(g => g.userId === user.id).sort((a,b)=>new Date(b.date)-new Date(a.date));
-            return `
-            <div class="card"><div class="card-header">📊 Мои оценки (всего: ${myGrades.length})</div>
-            ${myGrades.length ? `<div class="table-wrapper"><table><thead><tr><th>№</th><th>Категория</th><th>Направление</th><th>Оценка</th><th>Описание</th><th>Дата</th><th></th></tr></thead><tbody>
-            ${myGrades.map((g,i)=>`<tr><td>${i+1}</td><td>${escapeHTML(g.category||'')}</td><td>${escapeHTML(g.direction||'—')}</td><td><span class="grade-badge grade-${g.grade}">${g.grade}</span></td><td>${escapeHTML(g.description)}</td><td>${formatDate(g.date)}</td><td><button class="btn btn-sm" onclick="window._disputeGrade('${g.id}')">⚠️ Оспорить</button></td></tr>`).join('')}
-            </tbody></table></div>` : '<div class="empty-state">Пока нет оценок</div>'}
-            </div>`;
-        }
-    }
+    // ====== КОМАНДА ======
+    function renderTeamTab() { const users = getUsers(); return `<div class="card"><h3>👥 Наша команда</h3><p style="color:var(--text-light);font-size:0.85rem;">Всего: ${users.length} · Активировано: ${users.filter(u => u.activated || u.role === 'admin').length}</p><input class="search-bar" id="teamSearch" placeholder="🔍 Поиск..." oninput="window._searchTeam()"><div id="teamList">${users.filter(u => u.activated || u.role === 'admin').map(u => `<div class="card" style="cursor:pointer;padding:12px;" onclick="window._viewProfile(${u.id})"><strong>${escapeHTML(u.fullName||u.name)}</strong><br><small style="color:var(--text-light);">${escapeHTML(u.position||'Участник')} · ${escapeHTML(u.district||'—')}</small></div>`).join('')}</div></div>`; }
+    window._searchTeam = function() { const q = document.getElementById('teamSearch')?.value.toLowerCase() || ''; const users = getUsers().filter(u => (u.activated || u.role === 'admin') && ((u.fullName||u.name).toLowerCase().includes(q) || (u.position||'').toLowerCase().includes(q))); document.getElementById('teamList').innerHTML = users.map(u => `<div class="card" style="cursor:pointer;padding:12px;" onclick="window._viewProfile(${u.id})"><strong>${escapeHTML(u.fullName||u.name)}</strong><br><small style="color:var(--text-light);">${escapeHTML(u.position||'Участник')} · ${escapeHTML(u.district||'—')}</small></div>`).join(''); };
 
-    window._editGrade = function(gradeId) {
-        const grades = getGrades();
-        const grade = grades.find(g => g.id === gradeId);
-        if (!grade) return;
-        const modal = document.createElement('div'); modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3>Редактировать оценку</h3>
-                <div class="form-group"><label>Категория</label><select id="editGradeCategory">${GRADE_CATEGORIES.map(c => `<option ${c===grade.category?'selected':''}>${c}</option>`).join('')}</select></div>
-                <div class="form-group"><label>Оценка</label><select id="editGradeVal">${[4,3,2,1,0].map(v => `<option value="${v}" ${v===grade.grade?'selected':''}>${v}</option>`).join('')}</select></div>
-                <div class="form-group"><label>Описание</label><input id="editGradeDesc" value="${escapeHTML(grade.description)}"></div>
-                <button class="btn btn-primary" id="saveEditGrade">💾 Сохранить</button>
-                <button class="btn" onclick="this.closest('.modal-overlay').remove()">Отмена</button>
-            </div>`;
-        document.body.appendChild(modal);
-        modal.querySelector('#saveEditGrade').onclick = () => {
-            grade.category = modal.querySelector('#editGradeCategory').value;
-            grade.grade = parseInt(modal.querySelector('#editGradeVal').value);
-            grade.description = modal.querySelector('#editGradeDesc').value.trim();
-            saveGrades(grades); modal.remove(); renderDashboard(); showToast('✅ Оценка обновлена', 'success');
-        };
-        modal.onclick = e => { if(e.target === modal) modal.remove(); };
-    };
-
-    window._disputeGrade = function(gradeId) {
-        const reason = prompt('Причина оспаривания:');
-        if (!reason) return;
-        const disputes = getDisputes();
-        disputes.push({ id: genId(), gradeId, userId: getSession().userId, reason, status: 'open', date: new Date().toISOString() });
-        saveDisputes(disputes);
-        showToast('⚠️ Оспаривание отправлено', 'success');
-    };
-
-    function bindGradesEvents() {
-        const session = getSession();
-        const user = getUsers().find(u => u.id === session.userId);
-        if (user.role === 'admin') {
-            const select = document.getElementById('gradeUserSelect');
-            const form = document.getElementById('addGradeForm');
-            if (!select || !form) return;
-            select.onchange = () => {
-                const grades = getGrades().filter(g => g.userId === parseInt(select.value)).sort((a,b)=>new Date(b.date)-new Date(a.date));
-                const tbody = document.querySelector('.table-wrapper tbody');
-                if (tbody) tbody.innerHTML = grades.map((g,i)=>`<tr><td>${i+1}</td><td>${escapeHTML(g.category||'')}</td><td><span class="grade-badge grade-${g.grade}">${g.grade}</span></td><td>${escapeHTML(g.description)}</td><td>${formatDate(g.date)}</td><td><button class="btn btn-sm" onclick="window._editGrade('${g.id}')">✏️</button> <button class="btn btn-danger btn-sm" data-gradeid="${g.id}">🗑</button></td></tr>`).join('');
-            };
-            form.onsubmit = e => {
-                e.preventDefault();
-                const grades = getGrades();
-                grades.push({
-                    id: genId(),
-                    userId: parseInt(select.value),
-                    grade: parseInt(document.getElementById('gradeVal').value),
-                    category: document.getElementById('gradeCategory').value,
-                    description: document.getElementById('gradeDesc').value.trim(),
-                    date: document.getElementById('gradeDate').value + 'T00:00:00',
-                    direction: document.getElementById('gradeCategory').value === 'Работа в направлении' ? 'Общая' : ''
-                });
-                saveGrades(grades);
-                showToast('✅ Оценка добавлена', 'success');
-                select.dispatchEvent(new Event('change'));
-                document.getElementById('gradeDesc').value = '';
-            };
-            document.body.addEventListener('click', e => {
-                if (e.target.classList.contains('btn-danger') && e.target.dataset.gradeid) {
-                    if (confirm('Удалить?')) {
-                        saveGrades(getGrades().filter(g => g.id !== e.target.dataset.gradeid));
-                        select.dispatchEvent(new Event('change'));
-                    }
-                }
-            });
-        }
-    }
+    // ====== ЧАТЫ ======
+    function renderChatsTab() { const session = getSession(); const user = getUsers().find(u => u.id === session.userId); if (!user.activated && user.role !== 'admin') return '<div class="card"><p style="color:var(--text-lighter);">❌ Аккаунт не активирован</p></div>'; const chatGroups = getChatGroups(); const activeGroupId = session.activeChatGroup || 'general'; let groupsHtml = `<div class="chat-group-item ${activeGroupId === 'general' ? 'active' : ''}" onclick="window._switchChatGroup('general')">💬 Общий чат</div>`; chatGroups.forEach(g => { groupsHtml += `<div class="chat-group-item ${activeGroupId === g.id ? 'active' : ''}" onclick="window._switchChatGroup('${g.id}')">📁 ${escapeHTML(g.name)}</div>`; }); return `<div style="display:flex;gap:12px;"><div style="width:220px;flex-shrink:0;"><div class="card"><h4 style="margin-bottom:8px;">Группы</h4>${groupsHtml}<div style="display:flex;gap:6px;margin-top:10px;"><input id="newGroupName" placeholder="Название" style="flex:1;padding:8px;border-radius:20px;border:1px solid var(--border);"><button class="btn btn-success btn-sm" id="createGroupBtn">➕</button></div></div></div><div style="flex:1;"><div class="card"><h3>${activeGroupId === 'general' ? '💬 Общий чат' : '📁 ' + (chatGroups.find(g => g.id === activeGroupId)?.name || '')}</h3><div class="messages-box" id="chatMessagesBox" style="height:300px;"></div><div style="display:flex;gap:8px;"><input id="chatMessageInput" placeholder="Сообщение..." style="flex:1;padding:10px;border-radius:20px;border:1px solid var(--border);"><button class="btn btn-primary" id="sendChatMessageBtn">➤</button></div></div></div></div>`; }
+    window._switchChatGroup = function(groupId) { const session = getSession(); session.activeChatGroup = groupId; saveSession(session); renderDashboard(); };
+    function bindChatsEvents() { const session = getSession(); const activeGroupId = session.activeChatGroup || 'general'; function loadMessages() { const box = document.getElementById('chatMessagesBox'); if (!box) return; const messages = activeGroupId === 'general' ? getGeneralChat() : getMessages().filter(m => m.groupId === activeGroupId); box.innerHTML = messages.sort((a,b) => new Date(a.date) - new Date(b.date)).map(m => { const u = getUsers().find(u => u.id === m.from); return `<div style="padding:4px 0;"><strong>${escapeHTML(u?.fullName||u?.name||'—')}</strong>: ${escapeHTML(m.text)} <small style="color:var(--text-lighter);">${formatDate(m.date)}</small></div>`; }).join(''); box.scrollTop = box.scrollHeight; } loadMessages(); document.getElementById('sendChatMessageBtn')?.addEventListener('click', () => { const input = document.getElementById('chatMessageInput'); if (!input?.value.trim()) return; if (activeGroupId === 'general') { const chat = getGeneralChat(); chat.push({ id: genId(), from: session.userId, text: input.value.trim(), date: new Date().toISOString() }); saveGeneralChat(chat); } else { const msgs = getMessages(); msgs.push({ id: genId(), from: session.userId, groupId: activeGroupId, text: input.value.trim(), date: new Date().toISOString() }); saveMessages(msgs); } input.value = ''; loadMessages(); }); document.getElementById('createGroupBtn')?.addEventListener('click', () => { const name = document.getElementById('newGroupName')?.value.trim(); if (!name) return; const groups = getChatGroups(); groups.push({ id: genId(), name, createdBy: session.userId, createdAt: new Date().toISOString() }); saveChatGroups(groups); session.activeChatGroup = groups[groups.length - 1].id; saveSession(session); renderDashboard(); }); }
 
     // ====== НОВОСТИ ======
-    function renderNewsTab() {
-        const session = getSession();
-        const news = getNews().sort((a,b)=>new Date(b.date)-new Date(a.date));
-        let formHtml = '';
-        if (session.role === 'admin') {
-            formHtml = `
-            <div class="card"><div class="card-header">➕ Добавить новость</div>
-                <form id="newsForm" class="form-row">
-                    <div class="form-group"><label>Заголовок</label><input id="newsTitle" required></div>
-                    <div class="form-group" style="flex:2;"><label>Содержание</label><input id="newsContent" required></div>
-                    <div class="form-group"><label>Ссылка</label><input id="newsLink" placeholder="https://..."></div>
-                    <div class="form-group"><label>Фото URL (через запятую)</label><input id="newsImages" placeholder="url1, url2"></div>
-                    <div class="form-group"><label>Видео URL</label><input id="newsVideo"></div>
-                    <div class="form-group"><label>Файл URL</label><input id="newsFile"></div>
-                    <button type="submit" class="btn btn-primary">Опубликовать</button>
-                </form>
-            </div>`;
-        }
-        let items = news.map(n => {
-            const imgs = (n.images || '').split(/[,;]+/).filter(u => u.trim());
-            return `
-            <div class="card" style="padding:16px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <strong>${escapeHTML(n.title)}</strong>
-                    ${session.role === 'admin' ? `<div><button class="btn btn-sm" onclick="window._editNews('${n.id}')">✏️</button> <button class="btn btn-danger btn-sm" onclick="window._deleteNews('${n.id}')">🗑</button></div>` : ''}
-                </div>
-                <p>${escapeHTML(n.content)}</p>
-                ${imgs.map(url => `<img src="${escapeHTML(url.trim())}" class="gallery-img">`).join('')}
-                ${n.video ? (n.video.includes('youtube.com/watch') ? `<iframe width="280" height="158" src="https://www.youtube.com/embed/${new URL(n.video).searchParams.get('v')}" frameborder="0" allowfullscreen></iframe>` : `<video controls width="280"><source src="${escapeHTML(n.video)}"></video>`) : ''}
-                ${n.file ? `<a href="${escapeHTML(n.file)}" target="_blank">📎 Скачать файл</a>` : ''}
-                ${n.link ? `<a href="${escapeHTML(n.link)}" target="_blank">🔗 Подробнее</a>` : ''}
-                <small>${formatDate(n.date)}</small>
-            </div>`;
-        }).join('');
-        return formHtml + '<div style="display:flex;flex-direction:column;gap:12px;">' + (items || '<div class="empty-state">Нет новостей</div>') + '</div>';
-    }
-
-    window._editNews = function(newsId) {
-        const news = getNews().find(n => n.id === newsId);
-        if (!news) return;
-        const modal = document.createElement('div'); modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3>Редактировать новость</h3>
-                <div class="form-group"><label>Заголовок</label><input id="editNewsTitle" value="${escapeHTML(news.title)}" required></div>
-                <div class="form-group"><label>Содержание</label><input id="editNewsContent" value="${escapeHTML(news.content)}" required></div>
-                <div class="form-group"><label>Ссылка</label><input id="editNewsLink" value="${escapeHTML(news.link||'')}"></div>
-                <div class="form-group"><label>Фото URL</label><input id="editNewsImages" value="${escapeHTML(news.images||'')}"></div>
-                <div class="form-group"><label>Видео URL</label><input id="editNewsVideo" value="${escapeHTML(news.video||'')}"></div>
-                <div class="form-group"><label>Файл URL</label><input id="editNewsFile" value="${escapeHTML(news.file||'')}"></div>
-                <button class="btn btn-primary" id="saveNewsEdit">💾 Сохранить</button>
-                <button class="btn" onclick="this.closest('.modal-overlay').remove()">Отмена</button>
-            </div>`;
-        document.body.appendChild(modal);
-        modal.querySelector('#saveNewsEdit').onclick = () => {
-            news.title = modal.querySelector('#editNewsTitle').value;
-            news.content = modal.querySelector('#editNewsContent').value;
-            news.link = modal.querySelector('#editNewsLink').value;
-            news.images = modal.querySelector('#editNewsImages').value;
-            news.video = modal.querySelector('#editNewsVideo').value;
-            news.file = modal.querySelector('#editNewsFile').value;
-            saveNews(getNews().map(n => n.id === news.id ? news : n));
-            modal.remove(); renderDashboard(); showToast('✅ Новость обновлена', 'success');
-        };
-        modal.onclick = e => { if(e.target === modal) modal.remove(); };
-    };
-
-    window._deleteNews = function(newsId) {
-        if (!confirm('Удалить новость?')) return;
-        saveNews(getNews().filter(n => n.id !== newsId));
-        showToast('🗑 Новость удалена', 'success');
-        renderDashboard();
-    };
-
-    function bindNewsEvents() {
-        const form = document.getElementById('newsForm');
-        if (!form) return;
-        form.onsubmit = e => {
-            e.preventDefault();
-            const news = getNews();
-            news.push({
-                id: genId(),
-                title: document.getElementById('newsTitle').value,
-                content: document.getElementById('newsContent').value,
-                link: document.getElementById('newsLink').value,
-                images: document.getElementById('newsImages').value,
-                video: document.getElementById('newsVideo').value,
-                file: document.getElementById('newsFile').value,
-                date: new Date().toISOString()
-            });
-            saveNews(news);
-            showToast('📰 Новость добавлена', 'success');
-            renderDashboard();
-        };
-    }
-
-    // ====== ЗАДАНИЯ ======
-    function renderTasksTab() {
-        const session = getSession();
-        const user = getUsers().find(u => u.id === session.userId);
-        const tasks = getTasks().sort((a,b)=>new Date(b.date)-new Date(a.date));
-        const completions = getTaskCompletions();
-        if (user.role === 'admin') {
-            const allUsers = getUsers().filter(u => u.role === 'user');
-            return `
-            <div class="card"><div class="card-header">➕ Добавить задание</div>
-                <form id="taskForm" class="form-row">
-                    <div class="form-group"><label>Название</label><input id="taskTitle" required></div>
-                    <div class="form-group"><label>Описание</label><input id="taskDesc" required></div>
-                    <div class="form-group"><label>Ссылка</label><input id="taskLink"></div>
-                    <div class="form-group"><label>Фото URL</label><input id="taskImage"></div>
-                    <div class="form-group"><label>Видео URL</label><input id="taskVideo"></div>
-                    <div class="form-group"><label>Текст уведомления</label><input id="taskNotify" placeholder="Увидят все или выбранный участник"></div>
-                    <div class="form-group"><label>Назначить участнику</label><select id="taskAssignedTo"><option value="">Все</option>${allUsers.map(u => `<option value="${u.id}">${escapeHTML(u.fullName||u.name)}</option>`).join('')}</select></div>
-                    <button type="submit" class="btn btn-primary">Опубликовать</button>
-                </form>
-            </div>
-            ${tasks.map(task => {
-                const done = completions.filter(c => c.taskId === task.id && c.status === 'done').length;
-                const undone = completions.filter(c => c.taskId === task.id && c.status === 'undone').length;
-                const assignedUser = task.assignedTo ? allUsers.find(u => u.id == task.assignedTo) : null;
-                const detailsHtml = task.assignedTo ? '' : `<div style="margin-top:8px;"><strong>📊 Детали выполнения:</strong><ul>${allUsers.map(u => { const stat = completions.find(c=>c.taskId===task.id&&c.userId===u.id); return `<li>${escapeHTML(u.fullName||u.name)}: ${stat ? (stat.status==='done'?'✅ Выполнено':'❌ Не выполнено') : '⏳ Ожидает'}</li>`; }).join('')}</ul></div>`;
-                return `<div class="card">
-                    <strong>${escapeHTML(task.title)}</strong> ${assignedUser ? `<span style="background:var(--bg); padding:2px 8px; border-radius:10px;">👤 ${escapeHTML(assignedUser.fullName||assignedUser.name)}</span>` : '<span style="background:var(--bg); padding:2px 8px; border-radius:10px;">👥 Всем</span>'}
-                    <p>${escapeHTML(task.description)}</p>
-                    ${task.image ? `<img src="${escapeHTML(task.image)}" style="max-width:180px;">` : ''}
-                    ${task.video ? `<video controls width="280"><source src="${escapeHTML(task.video)}"></video>` : ''}
-                    <div>✅ ${done} | ❌ ${undone}</div>
-                    ${detailsHtml}
-                    <button class="btn btn-sm" onclick="window._editTask('${task.id}')">✏️</button>
-                    <button class="btn btn-danger btn-sm" onclick="window._deleteTask('${task.id}')">🗑</button>
-                </div>`;
-            }).join('') || '<div class="empty-state">Нет заданий</div>'}`;
-        } else {
-            const myTasks = tasks.filter(task => !task.assignedTo || task.assignedTo == user.id);
-            return myTasks.map(task => {
-                const my = completions.find(c => c.taskId === task.id && c.userId === user.id);
-                let statusHtml = '';
-                if (my) {
-                    statusHtml = my.status === 'done' ? '<span class="status-done">✅ Выполнено</span>' : '<span class="status-undone">❌ Не выполнено</span>';
-                } else {
-                    statusHtml = `<button class="btn btn-success btn-sm" onclick="window._setTaskStatus('${task.id}','done')">✅ Выполнено</button> <button class="btn btn-warning btn-sm" onclick="window._setTaskStatus('${task.id}','undone')">❌ Не выполнено</button>`;
-                }
-                return `<div class="card"><strong>${escapeHTML(task.title)}</strong><p>${escapeHTML(task.description)}</p>${statusHtml}</div>`;
-            }).join('') || '<div class="empty-state">Нет заданий</div>';
-        }
-    }
-
-    window._editTask = function(taskId) {
-        const tasks = getTasks();
-        const task = tasks.find(t => t.id === taskId);
-        if (!task) return;
-        const allUsers = getUsers().filter(u => u.role === 'user');
-        const modal = document.createElement('div'); modal.className = 'modal-overlay';
-        modal.innerHTML = `
-            <div class="modal-content">
-                <h3>Редактировать задание</h3>
-                <div class="form-group"><label>Название</label><input id="editTaskTitle" value="${escapeHTML(task.title)}" required></div>
-                <div class="form-group"><label>Описание</label><input id="editTaskDesc" value="${escapeHTML(task.description)}" required></div>
-                <div class="form-group"><label>Ссылка</label><input id="editTaskLink" value="${escapeHTML(task.link||'')}"></div>
-                <div class="form-group"><label>Фото URL</label><input id="editTaskImage" value="${escapeHTML(task.image||'')}"></div>
-                <div class="form-group"><label>Видео URL</label><input id="editTaskVideo" value="${escapeHTML(task.video||'')}"></div>
-                <div class="form-group"><label>Текст уведомления</label><input id="editTaskNotify" value="${escapeHTML(task.notify||'')}"></div>
-                <div class="form-group"><label>Назначить участнику</label><select id="editTaskAssignedTo"><option value="">Все</option>${allUsers.map(u => `<option value="${u.id}" ${task.assignedTo==u.id?'selected':''}>${escapeHTML(u.fullName||u.name)}</option>`).join('')}</select></div>
-                <button class="btn btn-primary" id="saveTaskEdit">💾 Сохранить</button>
-                <button class="btn" onclick="this.closest('.modal-overlay').remove()">Отмена</button>
-            </div>`;
-        document.body.appendChild(modal);
-        modal.querySelector('#saveTaskEdit').onclick = () => {
-            task.title = modal.querySelector('#editTaskTitle').value;
-            task.description = modal.querySelector('#editTaskDesc').value;
-            task.link = modal.querySelector('#editTaskLink').value;
-            task.image = modal.querySelector('#editTaskImage').value;
-            task.video = modal.querySelector('#editTaskVideo').value;
-            task.notify = modal.querySelector('#editTaskNotify').value;
-            task.assignedTo = modal.querySelector('#editTaskAssignedTo').value || null;
-            saveTasks(tasks); modal.remove(); renderDashboard(); showToast('✅ Задание обновлено', 'success');
-        };
-        modal.onclick = e => { if(e.target === modal) modal.remove(); };
-    };
-
-    window._deleteTask = function(taskId) {
-        if (!confirm('Удалить задание?')) return;
-        saveTasks(getTasks().filter(t => t.id !== taskId));
-        showToast('🗑 Задание удалено', 'success');
-        renderDashboard();
-    };
-
-    window._setTaskStatus = function(taskId, status) {
-        const completions = getTaskCompletions();
-        const exist = completions.findIndex(c => c.taskId === taskId && c.userId === getSession().userId);
-        if (exist >= 0) { completions[exist].status = status; completions[exist].date = new Date().toISOString(); }
-        else completions.push({ id: genId(), taskId, userId: getSession().userId, status, date: new Date().toISOString() });
-        saveTaskCompletions(completions);
-        showToast(status === 'done' ? '✅ Отмечено' : '❌ Не выполнено', 'success');
-        renderDashboard();
-    };
-
-    function bindTasksEvents() {
-        const form = document.getElementById('taskForm');
-        if (!form) return;
-        form.onsubmit = e => {
-            e.preventDefault();
-            const tasks = getTasks();
-            const newTask = {
-                id: genId(),
-                title: document.getElementById('taskTitle').value,
-                description: document.getElementById('taskDesc').value,
-                link: document.getElementById('taskLink').value,
-                image: document.getElementById('taskImage').value,
-                video: document.getElementById('taskVideo').value,
-                notify: document.getElementById('taskNotify').value,
-                assignedTo: document.getElementById('taskAssignedTo').value || null,
-                date: new Date().toISOString()
-            };
-            tasks.push(newTask);
-            saveTasks(tasks);
-            if (newTask.notify) {
-                const notifs = getNotifications();
-                notifs.push({ id: genId(), taskId: newTask.id, message: newTask.notify, seenBy: [], targetUserId: newTask.assignedTo || null });
-                saveNotifications(notifs);
-            }
-            showToast('📋 Задание добавлено', 'success');
-            renderDashboard();
-        };
-    }
+    function renderNewsTab() { const session = getSession(); const news = getNews().sort((a,b)=>new Date(b.date)-new Date(a.date)); return (session.role === 'admin' ? `<div class="card"><form id="newsForm" class="form-row"><input id="newsTitle" placeholder="Заголовок" required><textarea id="newsContent" placeholder="Содержание" required></textarea><button class="btn btn-primary">Опубликовать</button></form></div>` : '') + news.map(n => `<div class="card"><strong>${escapeHTML(n.title)}</strong><p style="margin-top:4px;">${escapeHTML(n.content)}</p><small style="color:var(--text-lighter);">${formatDate(n.date)}</small>${session.role==='admin'?`<button class="btn btn-danger btn-sm" onclick="window._deleteNews('${n.id}')">🗑</button>`:''}</div>`).join(''); }
+    window._deleteNews = function(id) { if (confirm('Удалить?')) { saveNews(getNews().filter(n => n.id !== id)); renderDashboard(); } };
+    function bindNewsEvents() { document.getElementById('newsForm')?.addEventListener('submit', e => { e.preventDefault(); const news = getNews(); news.push({ id: genId(), title: document.getElementById('newsTitle').value, content: document.getElementById('newsContent').value, date: new Date().toISOString() }); saveNews(news); renderDashboard(); }); }
 
     // ====== ОБРАТНАЯ СВЯЗЬ ======
-    function renderFeedbackTab() {
-        const session = getSession();
-        const fb = getFeedback();
-        if (session.role !== 'admin') {
-            return `<div class="card"><form id="feedbackForm" class="form-row"><textarea id="fbMsg" required></textarea><button class="btn btn-primary">Отправить</button></form></div>` +
-                fb.filter(f=>f.userId===session.userId).map(f=>`<div class="card"><p>${escapeHTML(f.message)}</p><small>${formatDate(f.date)}</small></div>`).join('');
-        }
-        const users = getUsers();
-        return fb.map(f => `<div class="card"><strong>${escapeHTML((users.find(u=>u.id===f.userId)||{}).fullName||'')}</strong><p>${escapeHTML(f.message)}</p></div>`).join('');
-    }
+    function renderFeedbackTab() { const session = getSession(); const fb = getFeedback(); if (session.role !== 'admin') { return `<div class="card"><h3>💬 Обратная связь</h3><form id="feedbackForm" class="form-row"><textarea id="fbMsg" placeholder="Ваше сообщение..." required></textarea><button class="btn btn-primary">Отправить</button></form></div>` + fb.filter(f=>f.userId===session.userId).map(f=>`<div class="card"><p>${escapeHTML(f.message)}</p><small style="color:var(--text-lighter);">${formatDate(f.date)}</small></div>`).join(''); } const users = getUsers(); return `<div class="card"><h3>💬 Все обращения</h3></div>` + fb.map(f => { const u = users.find(u=>u.id===f.userId); return `<div class="card"><strong>${escapeHTML(u?.fullName||u?.name||'—')}</strong><p style="margin-top:4px;">${escapeHTML(f.message)}</p><small style="color:var(--text-lighter);">${formatDate(f.date)}</small></div>`; }).join(''); }
+    function bindFeedbackEvents() { document.getElementById('feedbackForm')?.addEventListener('submit', e => { e.preventDefault(); const fb = getFeedback(); fb.push({ id: genId(), userId: getSession().userId, message: document.getElementById('fbMsg').value, date: new Date().toISOString() }); saveFeedback(fb); showToast('💬 Отправлено', 'success'); renderDashboard(); }); }
 
-    function bindFeedbackEvents() {
-        const form = document.getElementById('feedbackForm');
-        if (!form) return;
-        form.onsubmit = e => {
-            e.preventDefault();
-            const fb = getFeedback();
-            fb.push({ id: genId(), userId: getSession().userId, message: form.fbMsg.value, date: new Date().toISOString() });
-            saveFeedback(fb);
-            showToast('💬 Отправлено', 'success');
-            renderDashboard();
-        };
-    }
+    // ====== МЕДИА ======
+    function renderMediaTab() { const session = getSession(); const currentFolderId = session.currentMediaFolder || null; const folders = getMediaFolders().filter(f => f.parentId === currentFolderId); const files = getMediaFiles().filter(f => f.folderId === currentFolderId).sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)); let breadcrumbs = [{ id: null, name: '📁 Корень' }]; if (currentFolderId) { let parent = getMediaFolders().find(f => f.id === currentFolderId); while (parent) { breadcrumbs.unshift({ id: parent.id, name: '📁 ' + parent.name }); parent = getMediaFolders().find(f => f.id === parent.parentId); } } return `<div class="card"><h3>📸 Медиа</h3><div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;">${breadcrumbs.map((b, i) => `<span onclick="window._navigateMedia('${b.id}')" style="cursor:pointer;color:var(--primary);">${b.name}</span>${i < breadcrumbs.length - 1 ? ' / ' : ''}`).join('')}</div><div class="form-row"><input id="newFolderName" placeholder="Название папки"><button class="btn btn-primary" id="createFolderBtn">📁 Создать</button></div><div class="form-row"><input id="mediaFileUrl" placeholder="URL файла"><input id="mediaFileName" placeholder="Название"><button class="btn btn-success" id="addMediaFileBtn">➕ Добавить</button></div>${folders.length > 0 ? `<h4>📁 Папки</h4><div style="display:flex;flex-wrap:wrap;gap:8px;">${folders.map(f => `<div class="folder-item" style="flex:1;min-width:180px;"><span onclick="window._navigateMedia('${f.id}')" style="cursor:pointer;">📁 <strong>${escapeHTML(f.name)}</strong></span><div><button class="btn btn-sm" onclick="window._renameFolder('${f.id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="window._deleteFolder('${f.id}')">🗑</button></div></div>`).join('')}</div>` : ''}${files.length > 0 ? `<h4>📄 Файлы (${files.length})</h4><div style="display:flex;flex-wrap:wrap;gap:8px;">${files.map(f => { if (f.url.match(/\.(jpg|jpeg|png|gif|webp)/i)) return `<div class="card" style="padding:8px;"><img src="${f.url}" class="gallery-img" onclick="window.open('${f.url}')"><br><small>${escapeHTML(f.name)}</small><br><button class="btn btn-danger btn-sm" onclick="window._deleteFile('${f.id}')">🗑</button></div>`; if (f.url.match(/\.(mp4|webm|mov)/i)) return `<div class="card" style="padding:8px;"><video controls width="100%"><source src="${f.url}"></video><br><small>${escapeHTML(f.name)}</small><br><button class="btn btn-danger btn-sm" onclick="window._deleteFile('${f.id}')">🗑</button></div>`; return `<div class="card" style="padding:8px;"><a href="${f.url}" target="_blank">📎 ${escapeHTML(f.name)}</a><br><button class="btn btn-danger btn-sm" onclick="window._deleteFile('${f.id}')">🗑</button></div>`; }).join('')}</div>` : ''}</div>`; }
+    window._navigateMedia = function(folderId) { const session = getSession(); session.currentMediaFolder = folderId === 'null' ? null : folderId; saveSession(session); renderDashboard(); };
+    window._renameFolder = function(folderId) { const folder = getMediaFolders().find(f => f.id === folderId); if (!folder) return; const newName = prompt('Новое название:', folder.name); if (!newName) return; folder.name = newName; saveMediaFolders(getMediaFolders().map(f => f.id === folderId ? folder : f)); renderDashboard(); };
+    window._deleteFolder = function(folderId) { if (!confirm('Удалить?')) return; saveMediaFolders(getMediaFolders().filter(f => f.id !== folderId && f.parentId !== folderId)); saveMediaFiles(getMediaFiles().filter(f => f.folderId !== folderId)); renderDashboard(); };
+    window._deleteFile = function(fileId) { if (!confirm('Удалить?')) return; saveMediaFiles(getMediaFiles().filter(f => f.id !== fileId)); renderDashboard(); };
+    function bindMediaEvents() { document.getElementById('createFolderBtn')?.addEventListener('click', async () => { const name = document.getElementById('newFolderName').value.trim(); if (!name) return; const folders = getMediaFolders(); folders.push({ id: genId(), name, parentId: getSession().currentMediaFolder || null, createdBy: getSession().userId, createdAt: new Date().toISOString() }); await saveMediaFolders(folders); document.getElementById('newFolderName').value = ''; renderDashboard(); }); document.getElementById('addMediaFileBtn')?.addEventListener('click', async () => { const url = document.getElementById('mediaFileUrl').value.trim(); const name = document.getElementById('mediaFileName').value.trim() || 'Файл'; if (!url) return; const files = getMediaFiles(); files.push({ id: genId(), name, url, folderId: getSession().currentMediaFolder || null, uploadedBy: getSession().userId, createdAt: new Date().toISOString() }); await saveMediaFiles(files); document.getElementById('mediaFileUrl').value = ''; document.getElementById('mediaFileName').value = ''; renderDashboard(); }); }
 
-    // ====== ПУБЛИЧНЫЙ РЕЙТИНГ (только участники с оценками) ======
-    function renderPublicRating() {
-        const users = getUsers().filter(u => u.role === 'user');
-        const grades = getGrades();
-        const usersWithGrades = users.filter(u => grades.some(g => g.userId === u.id));
-        const rows = usersWithGrades.map(u => {
-            const userGrades = grades.filter(g => g.userId === u.id);
-            const avg = userGrades.length ? (userGrades.reduce((s,g)=>s+g.grade,0)/userGrades.length).toFixed(2) : '—';
-            return { user: u, avg, count: userGrades.length };
-        }).sort((a,b) => {
-            if (a.avg === '—') return 1;
-            if (b.avg === '—') return -1;
-            return parseFloat(b.avg) - parseFloat(a.avg);
-        });
-        const isAdmin = getSession()?.role === 'admin';
-        return `
-        <div class="card">
-            <div class="card-header">🏆 Общий рейтинг (только участники с оценками)</div>
-            ${rows.length ? `<div class="table-wrapper"><table>
-                <thead><tr><th>№</th><th>Участник</th><th>Округ</th><th>Средний балл</th><th>Оценок</th></tr></thead>
-                <tbody>${rows.map((r,i) => `<tr>
-                    <td>${i+1}</td>
-                    <td>${escapeHTML(r.user.fullName||r.user.name)}</td>
-                    <td>${escapeHTML(r.user.district||'—')}</td>
-                    <td class="${!isAdmin && r.avg !== '—' && parseFloat(r.avg) < 1.5 ? 'blurred' : ''}">${r.avg}</td>
-                    <td>${r.count}</td>
-                </tr>`).join('')}</tbody>
-            </table></div>` : '<div class="empty-state">Нет участников с оценками</div>'}
-        </div>`;
-    }
+    // ====== ОЦЕНКИ ======
+    function renderGradesTab() { const session = getSession(); const user = getUsers().find(u => u.id === session.userId); const allGrades = getGrades(); if (user.role === 'admin') { const users = getUsers().filter(u => u.role === 'user'); const selId = users.length ? users[0].id : null; const grades = allGrades.filter(g => g.userId === selId).sort((a,b)=>new Date(b.date)-new Date(a.date)); return `<div class="card"><select id="gradeUserSelect" style="width:100%;padding:10px;border-radius:20px;">${users.map(u => `<option value="${u.id}">${escapeHTML(u.fullName||u.name)}</option>`).join('')}</select></div><div class="card"><form id="addGradeForm" class="form-row"><select id="gradeCategory">${GRADE_CATEGORIES.map(c => `<option>${c}</option>`).join('')}</select><select id="gradeVal">${[4,3,2,1,0].map(v=>`<option value="${v}">${v}</option>`).join('')}</select><input type="date" id="gradeDate" value="${new Date().toISOString().split('T')[0]}"><input id="gradeDesc" required placeholder="Описание"><button type="submit" class="btn btn-primary">✅ Выставить</button></form></div><div class="card"><div class="table-wrapper"><table><thead><tr><th>№</th><th>Категория</th><th>Оценка</th><th>Описание</th><th>Дата</th><th></th></tr></thead><tbody id="gradesTableBody">${grades.map((g,i)=>`<tr><td>${i+1}</td><td>${escapeHTML(g.category||'')}</td><td><span class="grade-badge grade-${g.grade}">${g.grade}</span></td><td>${escapeHTML(g.description)}</td><td>${formatDate(g.date)}</td><td><button class="btn btn-sm" onclick="window._editGrade('${g.id}')">✏️</button> <button class="btn btn-danger btn-sm" data-gradeid="${g.id}">🗑</button></td></tr>`).join('')}</tbody></table></div></div>`; } else { const myGrades = allGrades.filter(g => g.userId === user.id).sort((a,b)=>new Date(b.date)-new Date(a.date)); return `<div class="card"><h3>📊 Мои оценки (${myGrades.length})</h3><div class="table-wrapper"><table><thead><tr><th>№</th><th>Категория</th><th>Направление</th><th>Оценка</th><th>Описание</th><th>Дата</th><th></th></tr></thead><tbody>${myGrades.map((g,i)=>`<tr><td>${i+1}</td><td>${escapeHTML(g.category||'')}</td><td>${escapeHTML(g.direction||'—')}</td><td><span class="grade-badge grade-${g.grade}">${g.grade}</span></td><td>${escapeHTML(g.description)}</td><td>${formatDate(g.date)}</td><td><button class="btn btn-sm" onclick="window._disputeGrade('${g.id}')">⚠️</button></td></tr>`).join('')}</tbody></table></div></div>`; } }
+    window._editGrade = function(gradeId) { const grades = getGrades(); const grade = grades.find(g => g.id === gradeId); if (!grade) return; const modal = document.createElement('div'); modal.className = 'modal-overlay'; modal.innerHTML = `<div class="modal-content"><h3>Редактировать</h3><select id="egc">${GRADE_CATEGORIES.map(c => `<option ${c===grade.category?'selected':''}>${c}</option>`).join('')}</select><select id="egv">${[4,3,2,1,0].map(v => `<option value="${v}" ${v===grade.grade?'selected':''}>${v}</option>`).join('')}</select><input id="egd" value="${escapeHTML(grade.description)}"><button id="seg" class="btn btn-primary">💾 Сохранить</button></div>`; document.body.appendChild(modal); modal.querySelector('#seg').onclick = () => { grade.category = modal.querySelector('#egc').value; grade.grade = parseInt(modal.querySelector('#egv').value); grade.description = modal.querySelector('#egd').value.trim(); saveGrades(grades); modal.remove(); renderDashboard(); }; };
+    window._disputeGrade = function(gradeId) { const reason = prompt('Причина:'); if (!reason) return; const disputes = getDisputes(); disputes.push({ id: genId(), gradeId, userId: getSession().userId, reason, status: 'open', date: new Date().toISOString() }); saveDisputes(disputes); showToast('⚠️ Отправлено', 'success'); };
+    function bindGradesEvents() { const session = getSession(); if (session.role === 'admin') { const select = document.getElementById('gradeUserSelect'); const form = document.getElementById('addGradeForm'); if (!select || !form) return; select.onchange = () => { const grades = getGrades().filter(g => g.userId === parseInt(select.value)).sort((a,b)=>new Date(b.date)-new Date(a.date)); document.getElementById('gradesTableBody').innerHTML = grades.map((g,i)=>`<tr><td>${i+1}</td><td>${escapeHTML(g.category||'')}</td><td><span class="grade-badge grade-${g.grade}">${g.grade}</span></td><td>${escapeHTML(g.description)}</td><td>${formatDate(g.date)}</td><td><button class="btn btn-sm" onclick="window._editGrade('${g.id}')">✏️</button> <button class="btn btn-danger btn-sm" data-gradeid="${g.id}">🗑</button></td></tr>`).join(''); }; form.onsubmit = e => { e.preventDefault(); const grades = getGrades(); grades.push({ id: genId(), userId: parseInt(select.value), grade: parseInt(document.getElementById('gradeVal').value), category: document.getElementById('gradeCategory').value, description: document.getElementById('gradeDesc').value.trim(), date: document.getElementById('gradeDate').value + 'T00:00:00' }); saveGrades(grades); select.dispatchEvent(new Event('change')); document.getElementById('gradeDesc').value = ''; }; document.body.addEventListener('click', e => { if (e.target.classList.contains('btn-danger') && e.target.dataset.gradeid) { if (confirm('Удалить?')) { saveGrades(getGrades().filter(g => g.id !== e.target.dataset.gradeid)); select.dispatchEvent(new Event('change')); } } }); } }
 
-    // ====== СВОДКА (админ) ======
-    function renderSummaryTab() {
-        const users = getUsers().filter(u => u.role === 'user');
-        const grades = getGrades();
-        const districts = ['Все', ...DISTRICTS];
-        const districtOptions = districts.map(d => `<option value="${d}">${d}</option>`).join('');
-        const usersWithGrades = users.filter(u => grades.some(g => g.userId === u.id));
-
-        function buildRating(filterDistrict = 'Все') {
-            const filtered = filterDistrict === 'Все' ? usersWithGrades : usersWithGrades.filter(u => u.district === filterDistrict);
-            const rows = filtered.map(u => {
-                const userGrades = grades.filter(g => g.userId === u.id);
-                const avg = userGrades.length ? (userGrades.reduce((s,g)=>s+g.grade,0)/userGrades.length).toFixed(2) : '—';
-                return { user: u, avg, count: userGrades.length };
-            }).sort((a,b) => {
-                if (a.avg === '—') return 1;
-                if (b.avg === '—') return -1;
-                return parseFloat(b.avg) - parseFloat(a.avg);
-            });
-
-            const lowAvgUsers = rows.filter(r => r.avg !== '—' && parseFloat(r.avg) < 1.5);
-            if (lowAvgUsers.length) {
-                setTimeout(() => {
-                    const modal = document.createElement('div'); modal.className = 'modal-overlay';
-                    modal.innerHTML = `<div class="modal-content"><h3>⚠️ Низкий средний балл</h3><ul>${lowAvgUsers.map(r => `<li>${escapeHTML(r.user.fullName||r.user.name)} — ${r.avg}</li>`).join('')}</ul><button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()">ОК</button></div>`;
-                    document.body.appendChild(modal);
-                    modal.onclick = e => { if(e.target === modal) modal.remove(); };
-                }, 200);
-            }
-
-            const isAdmin = getSession()?.role === 'admin';
-            return `
-            <div class="table-wrapper"><table>
-                <thead><tr><th>№</th><th>Участник</th><th>Округ</th><th>Средний балл</th><th>Оценок</th></tr></thead>
-                <tbody>${rows.map((r,i) => `<tr>
-                    <td>${i+1}</td>
-                    <td>${escapeHTML(r.user.fullName||r.user.name)}</td>
-                    <td>${escapeHTML(r.user.district||'—')}</td>
-                    <td class="${!isAdmin && r.avg !== '—' && parseFloat(r.avg) < 1.5 ? 'blurred' : ''}">${r.avg}</td>
-                    <td>${r.count}</td>
-                </tr>`).join('')}</tbody>
-            </table></div>`;
-        }
-
-        const html = `
-        <div class="card">
-            <div class="card-header">
-                <span>📈 Сводка (только участники с оценками)</span>
-                <div style="display:flex;align-items:center;gap:10px;">
-                    <label>Округ:</label>
-                    <select id="summaryDistrictFilter" style="padding:6px 12px;border-radius:20px;">${districtOptions}</select>
-                </div>
-            </div>
-            <div id="summaryContent"></div>
-        </div>`;
-
-        setTimeout(() => {
-            const filterDistrict = document.getElementById('summaryDistrictFilter');
-            const contentDiv = document.getElementById('summaryContent');
-            function refreshView() { contentDiv.innerHTML = buildRating(filterDistrict.value); }
-            filterDistrict.addEventListener('change', refreshView);
-            refreshView();
-        }, 0);
-        return html;
-    }
+    // ====== ЗАДАНИЯ ======
+    function renderTasksTab() { const session = getSession(); const tasks = getTasks().sort((a,b)=>new Date(b.date)-new Date(a.date)); const completions = getTaskCompletions(); if (session.role === 'admin') { const allUsers = getUsers().filter(u => u.role === 'user'); return `<div class="card"><form id="taskForm" class="form-row"><input id="taskTitle" required placeholder="Название"><textarea id="taskDesc" required placeholder="Описание"></textarea><select id="taskAssignedTo"><option value="">Всем</option>${allUsers.map(u => `<option value="${u.id}">${escapeHTML(u.fullName||u.name)}</option>`).join('')}</select><button type="submit" class="btn btn-primary">Опубликовать</button></form></div>${tasks.map(task => { const done = completions.filter(c => c.taskId === task.id && c.status === 'done').length; const undone = completions.filter(c => c.taskId === task.id && c.status === 'undone').length; return `<div class="card"><strong>${escapeHTML(task.title)}</strong><p>${escapeHTML(task.description)}</p><div>✅ ${done} · ❌ ${undone}</div><button class="btn btn-danger btn-sm" onclick="window._deleteTask('${task.id}')">🗑</button></div>`; }).join('') || '<p style="color:var(--text-lighter);">Нет заданий</p>'}`; } const myTasks = tasks.filter(t => !t.assignedTo || t.assignedTo == session.userId); return myTasks.map(task => { const my = completions.find(c => c.taskId === task.id && c.userId === session.userId); let statusHtml = my ? (my.status === 'done' ? '✅ Выполнено' : '❌ Не выполнено') : `<button class="btn btn-success btn-sm" onclick="window._setTaskStatus('${task.id}','done')">✅</button> <button class="btn btn-warning btn-sm" onclick="window._setTaskStatus('${task.id}','undone')">❌</button>`; return `<div class="card"><strong>${escapeHTML(task.title)}</strong><p>${escapeHTML(task.description)}</p>${statusHtml}</div>`; }).join(''); }
+    window._deleteTask = function(id) { if (confirm('Удалить?')) { saveTasks(getTasks().filter(t => t.id !== id)); renderDashboard(); } };
+    window._setTaskStatus = function(taskId, status) { const completions = getTaskCompletions(); const exist = completions.findIndex(c => c.taskId === taskId && c.userId === getSession().userId); if (exist >= 0) { completions[exist].status = status; completions[exist].date = new Date().toISOString(); } else completions.push({ id: genId(), taskId, userId: getSession().userId, status, date: new Date().toISOString() }); saveTaskCompletions(completions); renderDashboard(); };
+    function bindTasksEvents() { document.getElementById('taskForm')?.addEventListener('submit', e => { e.preventDefault(); const tasks = getTasks(); tasks.push({ id: genId(), title: document.getElementById('taskTitle').value, description: document.getElementById('taskDesc').value, assignedTo: document.getElementById('taskAssignedTo').value || null, date: new Date().toISOString() }); saveTasks(tasks); renderDashboard(); }); }
 
     // ====== ПОЛЬЗОВАТЕЛИ ======
-    function renderUsersTab() {
-        const users = getUsers();
-        const userCount = users.filter(u => u.role === 'user').length;
-        const adminCount = users.filter(u => u.role === 'admin').length;
-        return `
-        <div class="card"><div class="card-header">👥 Пользователи (админов: ${adminCount}, участников: ${userCount}, всего: ${users.length})</div>
-        <select id="userSelect">${users.map(u => `<option value="${u.id}">${u.login} (${u.role})</option>`).join('')}</select>
-        <form id="userEditForm" class="form-row">
-            <div class="form-group"><label>Логин</label><input id="editLogin" required></div>
-            <div class="form-group"><label>Пароль</label><input id="editPassword" required></div>
-            <div class="form-group"><label>ФИО</label><input id="editFullName" placeholder="ФИО"></div>
-            <div class="form-group"><label>Дата вступления</label><input type="date" id="editJoinDate"></div>
-            <div class="form-group"><label>Округ</label><select id="editDistrict"><option>—</option>${DISTRICTS.map(d=>`<option>${d}</option>`).join('')}</select></div>
-            <div class="form-group"><label>Email</label><input id="editEmail" placeholder="Email"></div>
-            <div class="form-group"><label>Фото URL</label><input id="editPhotoURL" placeholder="URL фото"></div>
-            <div><label>Направления лидера:</label><div id="leaderCheckboxes">${DIRECTIONS.map(d => `<label><input type="checkbox" value="${d}"> ${d}</label><br>`).join('')}</div></div>
-            <button class="btn btn-primary" type="submit">💾 Сохранить</button>
-            <button class="btn btn-danger" type="button" id="deleteUserBtn">🗑 Удалить пользователя</button>
-        </form></div>`;
-    }
-
-    function bindUsersEvents() {
-        const sel = document.getElementById('userSelect');
-        const form = document.getElementById('userEditForm');
-        if (!sel) return;
-        sel.onchange = () => {
-            const u = getUsers().find(u => u.id === parseInt(sel.value));
-            if (!u) return;
-            form.editLogin.value = u.login; form.editPassword.value = u.password;
-            form.editFullName.value = u.fullName || ''; form.editJoinDate.value = u.joinDate || '';
-            form.editDistrict.value = u.district || '';
-            form.editEmail.value = u.email || ''; form.editPhotoURL.value = u.photoURL || '';
-            document.querySelectorAll('#leaderCheckboxes input').forEach(cb => cb.checked = u.leaderDirections.includes(cb.value));
-        };
-        form.onsubmit = e => {
-            e.preventDefault();
-            const users = getUsers();
-            const u = users.find(u => u.id === parseInt(sel.value));
-            u.login = form.editLogin.value; u.password = form.editPassword.value;
-            u.fullName = form.editFullName.value; u.joinDate = form.editJoinDate.value;
-            u.district = form.editDistrict.value; u.email = form.editEmail.value; u.photoURL = form.editPhotoURL.value;
-            u.leaderDirections = Array.from(document.querySelectorAll('#leaderCheckboxes input:checked')).map(cb => cb.value);
-            saveUsers(users);
-            showToast('💾 Сохранено', 'success');
-            renderDashboard();
-        };
-        document.getElementById('deleteUserBtn').onclick = () => {
-            const userId = parseInt(sel.value);
-            const userToDelete = getUsers().find(u => u.id === userId);
-            if (!userToDelete) return;
-            if (!confirm(`Вы уверены, что хотите удалить пользователя "${userToDelete.login}" (${userToDelete.fullName || userToDelete.name})? Все его данные (оценки, сообщения, задания) будут удалены.`)) return;
-            
-            saveUsers(getUsers().filter(u => u.id !== userId));
-            saveGrades(getGrades().filter(g => g.userId !== userId));
-            saveTaskCompletions(getTaskCompletions().filter(c => c.userId !== userId));
-            saveFeedback(getFeedback().filter(f => f.userId !== userId));
-            saveDisputes(getDisputes().filter(d => d.userId !== userId));
-            saveMessages(getMessages().filter(m => m.from !== userId && m.to !== userId));
-            
-            showToast('🗑 Пользователь удалён', 'success');
-            renderDashboard();
-        };
-        sel.dispatchEvent(new Event('change'));
-    }
+    function renderUsersTab() { const users = getUsers(); return `<div class="card"><h3>👥 Участники (${users.length})</h3><select id="userSelect" style="width:100%;padding:10px;border-radius:20px;margin-bottom:12px;">${users.map(u => `<option value="${u.id}">${u.login} (${u.role})</option>`).join('')}</select><form id="userEditForm" class="form-row"><input id="editLogin" required placeholder="Логин"><input id="editPassword" required placeholder="Пароль"><input id="editFullName" placeholder="ФИО"><select id="editPosition">${POSITIONS.map(p=>`<option>${p}</option>`).join('')}</select><select id="editDistrict"><option>—</option>${DISTRICTS.map(d=>`<option>${d}</option>`).join('')}</select><label><input type="checkbox" id="editActivated"> Активирован</label><div id="leaderCheckboxes">${DIRECTIONS.map(d => `<label style="font-size:0.8rem;"><input type="checkbox" value="${d}"> ${d}</label>`).join('')}</div><button class="btn btn-primary" type="submit">💾 Сохранить</button><button class="btn btn-danger" type="button" id="deleteUserBtn">🗑 Удалить</button></form><div class="form-row"><input id="newPositionName" placeholder="Новая должность"><button class="btn btn-success" id="addPositionBtn">➕</button></div></div>`; }
+    function bindUsersEvents() { const sel = document.getElementById('userSelect'); const form = document.getElementById('userEditForm'); if (!sel) return; sel.onchange = () => { const u = getUsers().find(u => u.id === parseInt(sel.value)); if (!u) return; form.editLogin.value = u.login; form.editPassword.value = u.password; form.editFullName.value = u.fullName || ''; form.editPosition.value = u.position || 'Участник'; form.editDistrict.value = u.district || ''; document.getElementById('editActivated').checked = u.activated; document.querySelectorAll('#leaderCheckboxes input').forEach(cb => cb.checked = u.leaderDirections.includes(cb.value)); }; form.onsubmit = e => { e.preventDefault(); const users = getUsers(); const u = users.find(u => u.id === parseInt(sel.value)); u.login = form.editLogin.value; u.password = form.editPassword.value; u.fullName = form.editFullName.value; u.position = form.editPosition.value; u.district = form.editDistrict.value; u.activated = document.getElementById('editActivated').checked; u.leaderDirections = Array.from(document.querySelectorAll('#leaderCheckboxes input:checked')).map(cb => cb.value); saveUsers(users); renderDashboard(); }; document.getElementById('deleteUserBtn').onclick = () => { if (!confirm('Удалить?')) return; saveUsers(getUsers().filter(u => u.id !== parseInt(sel.value))); renderDashboard(); }; document.getElementById('addPositionBtn')?.addEventListener('click', () => { const name = document.getElementById('newPositionName').value.trim(); if (!name) return; POSITIONS.push(name); savePositions(POSITIONS); renderDashboard(); }); sel.dispatchEvent(new Event('change')); }
 
     // ====== ОКРУГА ======
-    function renderDistrictsTab() {
-        return `
-        <div class="card">
-            <h3>🏙️ Управление округами</h3>
-            <form id="addDistrictForm" class="form-row">
-                <div class="form-group"><label>Название округа</label><input id="newDistrictName" required></div>
-                <button class="btn btn-primary">➕ Добавить округ</button>
-            </form>
-            <div class="table-wrapper"><table>
-                <thead><tr><th>№</th><th>Округ</th><th>Действие</th></tr></thead>
-                <tbody>${DISTRICTS.map((d,i) => `<tr><td>${i+1}</td><td>${escapeHTML(d)}</td><td><button class="btn btn-danger btn-sm" data-district="${escapeHTML(d)}">🗑</button></td></tr>`).join('')}</tbody>
-            </table></div>
-        </div>`;
-    }
+    function renderDistrictsTab() { return `<div class="card"><form id="addDistrictForm" class="form-row"><input id="newDistrictName" required placeholder="Название округа"><button class="btn btn-primary">➕ Добавить</button></form><div class="table-wrapper"><table>${DISTRICTS.map((d,i) => `<tr><td>${d}</td><td><button class="btn btn-danger btn-sm" data-district="${escapeHTML(d)}">🗑</button></td></tr>`).join('')}</table></div></div>`; }
+    function bindDistrictsEvents() { document.getElementById('addDistrictForm')?.addEventListener('submit', e => { e.preventDefault(); DISTRICTS.push(document.getElementById('newDistrictName').value.trim()); renderDashboard(); }); document.body.addEventListener('click', e => { if (e.target.classList.contains('btn-danger') && e.target.dataset.district) { if (confirm('Удалить?')) { DISTRICTS = DISTRICTS.filter(d => d !== e.target.dataset.district); renderDashboard(); } } }); }
 
-    function bindDistrictsEvents() {
-        document.getElementById('addDistrictForm')?.addEventListener('submit', e => {
-            e.preventDefault();
-            const name = document.getElementById('newDistrictName').value.trim();
-            if (!name || DISTRICTS.includes(name)) { showToast('❌ Такой округ уже существует', 'error'); return; }
-            DISTRICTS.push(name);
-            saveCache('districts', DISTRICTS);
-            showToast('✅ Округ добавлен', 'success');
-            renderDashboard();
-        });
-        document.body.addEventListener('click', e => {
-            if (e.target.classList.contains('btn-danger') && e.target.dataset.district) {
-                if (confirm('Удалить округ "' + e.target.dataset.district + '"?')) {
-                    DISTRICTS = DISTRICTS.filter(d => d !== e.target.dataset.district);
-                    saveCache('districts', DISTRICTS);
-                    showToast('🗑 Округ удалён', 'success');
-                    renderDashboard();
-                }
-            }
-        });
-    }
+    // ====== СПОРЫ ======
+    function renderDisputesTab() { return getDisputes().map(d => `<div class="card"><button class="btn btn-sm" onclick="window._resolveDispute('${d.id}','approve')">✅ Одобрить</button> <button class="btn btn-danger btn-sm" onclick="window._resolveDispute('${d.id}','reject')">❌ Отклонить</button></div>`).join('') || '<p style="color:var(--text-lighter);">Нет споров</p>'; }
+    window._resolveDispute = function(id, action) { const disputes = getDisputes(); const dispute = disputes.find(d => d.id === id); if (!dispute) return; if (action === 'approve') saveGrades(getGrades().filter(g => g.id !== dispute.gradeId)); saveDisputes(disputes.filter(d => d.id !== id)); renderDashboard(); };
 
-    // ====== ОСПАРИВАНИЯ ======
-    function renderDisputesTab() {
-        const disputes = getDisputes();
-        const grades = getGrades();
-        const users = getUsers();
-        return disputes.map(d => {
-            const grade = grades.find(g => g.id === d.gradeId);
-            const user = users.find(u => u.id === d.userId);
-            return `<div class="card"><strong>${user?.fullName||user?.name}</strong>: оспаривание "${grade?.description||''}" (${grade?.grade})<br>
-                <button class="btn btn-sm" onclick="window._resolveDispute('${d.id}','approve')">✅ Одобрить</button>
-                <button class="btn btn-sm btn-danger" onclick="window._resolveDispute('${d.id}','reject')">❌ Отклонить</button></div>`;
-        }).join('') || '<div class="empty-state">Нет оспариваний</div>';
-    }
-
-    window._resolveDispute = function(disputeId, action) {
-        const disputes = getDisputes();
-        const dispute = disputes.find(d => d.id === disputeId);
-        if (!dispute) return;
-        if (action === 'approve') saveGrades(getGrades().filter(g => g.id !== dispute.gradeId));
-        saveDisputes(disputes.filter(d => d.id !== disputeId));
-        renderDashboard();
-    };
-
-    // ====== ЛИДЕР НАПРАВЛЕНИЯ ======
-    function renderLeaderTab() {
-        const user = getUsers().find(u => u.id === getSession().userId);
-        const directions = user.leaderDirections;
-        const myGrades = getGrades().filter(g => directions.includes(g.direction));
-        return `
-        <div class="card">
-            <h3>🎯 Мои направления: ${directions.map(d => `<span style="background:var(--primary-light); padding:4px 10px; border-radius:12px; margin:2px;">${d}</span>`).join('')}</h3>
-            <form id="leaderGradeForm" class="form-row">
-                <div class="form-group"><label>Направление</label><select id="lgDir">${directions.map(d => `<option>${d}</option>`).join('')}</select></div>
-                <div class="form-group"><label>Участник</label><select id="lgUser">${getUsers().filter(u=>u.role==='user').map(u=>`<option value="${u.id}">${u.fullName||u.name}</option>`).join('')}</select></div>
-                <div class="form-group"><label>Оценка</label><select id="lgVal">${[4,3,2,1,0].map(v=>`<option>${v}</option>`).join('')}</select></div>
-                <div class="form-group"><label>Описание</label><input id="lgDesc" required></div>
-                <button type="submit" class="btn btn-primary">✅ Выставить оценку</button>
-            </form>
-        </div>
-        <div class="card">
-            <h4>📋 Выставленные мной оценки</h4>
-            ${myGrades.length ? myGrades.map(g => {
-                const targetUser = getUsers().find(u => u.id === g.userId);
-                return `<div class="card" style="margin-bottom:8px;">
-                    <strong>${escapeHTML(targetUser?.fullName||targetUser?.name||'—')}</strong> — <span class="grade-badge grade-${g.grade}">${g.grade}</span>
-                    <p>${escapeHTML(g.description||'')}</p>
-                    <small>${formatDate(g.date)}</small>
-                    <button class="btn btn-sm btn-danger" onclick="window._deleteGrade('${g.id}')">🗑</button>
-                </div>`;
-            }).join('') : '<div class="empty-state">Нет оценок</div>'}
-        </div>`;
-    }
-
-    window._deleteGrade = function(id) {
-        if (confirm('Удалить оценку?')) {
-            saveGrades(getGrades().filter(g => g.id !== id));
-            renderDashboard();
-        }
-    };
-
-    function bindLeaderEvents() {
-        const form = document.getElementById('leaderGradeForm');
-        if (!form) return;
-        form.onsubmit = e => {
-            e.preventDefault();
-            const grades = getGrades();
-            const newGrade = {
-                id: genId(),
-                userId: parseInt(document.getElementById('lgUser').value),
-                grade: parseInt(document.getElementById('lgVal').value),
-                direction: document.getElementById('lgDir').value,
-                description: document.getElementById('lgDesc').value.trim(),
-                date: new Date().toISOString(),
-                gradedBy: getSession().userId
-            };
-            grades.push(newGrade);
-            saveGrades(grades);
-            showToast('✅ Оценка выставлена', 'success');
-            renderDashboard();
-        };
-    }
+    // ====== ЛИДЕР ======
+    function renderLeaderTab() { const user = getUsers().find(u => u.id === getSession().userId); return `<div class="card"><h3>🎯 ${user.leaderDirections.join(', ')}</h3><form id="leaderGradeForm" class="form-row"><select id="lgDir">${user.leaderDirections.map(d => `<option>${d}</option>`).join('')}</select><select id="lgUser">${getUsers().filter(u=>u.role==='user').map(u=>`<option value="${u.id}">${u.fullName||u.name}</option>`).join('')}</select><select id="lgVal">${[4,3,2,1,0].map(v=>`<option>${v}</option>`).join('')}</select><input id="lgDesc" required placeholder="Описание"><button type="submit" class="btn btn-primary">✅ Выставить</button></form></div>`; }
+    function bindLeaderEvents() { document.getElementById('leaderGradeForm')?.addEventListener('submit', e => { e.preventDefault(); const grades = getGrades(); grades.push({ id: genId(), userId: parseInt(document.getElementById('lgUser').value), grade: parseInt(document.getElementById('lgVal').value), direction: document.getElementById('lgDir').value, description: document.getElementById('lgDesc').value.trim(), date: new Date().toISOString() }); saveGrades(grades); renderDashboard(); }); }
 
     // ====== ЧАТ НАПРАВЛЕНИЯ ======
-    function renderDirectionChatTab() {
-        const user = getUsers().find(u => u.id === getSession().userId);
-        const directions = user.leaderDirections;
-        const allUsers = getUsers().filter(u => u.role === 'user' && u.id !== user.id);
-        const chatMembers = getDirectionChatMembers();
-        
-        return `
-        <div class="card">
-            <h3>💬 Чат направления</h3>
-            <div class="form-row">
-                <div class="form-group"><label>Выберите направление</label><select id="dirChatSelect">${directions.map(d => `<option>${d}</option>`).join('')}</select></div>
-                <div class="form-group"><label>Добавить участника</label><select id="dirChatAddUser"><option value="">—</option>${allUsers.map(u => `<option value="${u.id}">${u.fullName||u.name} (${u.login})</option>`).join('')}</select></div>
-                <button class="btn btn-success btn-sm" id="addToDirChatBtn">➕ Добавить</button>
-            </div>
-            <div id="dirChatMembers" style="margin-top:8px;">
-                <strong>Участники чата:</strong>
-                <div id="dirChatMembersList">Выберите направление</div>
-            </div>
-        </div>
-        <div class="chat-container">
-            <div class="chat-area" style="flex:1;">
-                <div class="messages-box" id="dirMessagesBox"></div>
-                <div class="form-row" style="margin:0;">
-                    <input id="dirChatInput" placeholder="Сообщение..." style="flex:1;">
-                    <button class="btn btn-primary" id="sendDirChatBtn">➤</button>
-                </div>
-            </div>
-        </div>`;
-    }
-
-    function bindDirectionChatEvents() {
-        const user = getUsers().find(u => u.id === getSession().userId);
-        let currentDirection = user.leaderDirections[0];
-        const select = document.getElementById('dirChatSelect');
-        const msgBox = document.getElementById('dirMessagesBox');
-        const input = document.getElementById('dirChatInput');
-        const sendBtn = document.getElementById('sendDirChatBtn');
-        const addBtn = document.getElementById('addToDirChatBtn');
-        const addUserSelect = document.getElementById('dirChatAddUser');
-        const membersList = document.getElementById('dirChatMembersList');
-
-        function loadMembers() {
-            const members = getDirectionChatMembers().filter(m => m.direction === currentDirection);
-            const memberUsers = members.map(m => getUsers().find(u => u.id === m.userId)).filter(Boolean);
-            membersList.innerHTML = memberUsers.length ? memberUsers.map(u => `<span style="background:var(--bg); padding:2px 8px; border-radius:10px; margin:2px; display:inline-block;">${escapeHTML(u.fullName||u.name)} <button class="btn btn-sm btn-danger" style="padding:0 4px;font-size:0.6rem;" data-remove="${u.id}">×</button></span>`).join('') : 'Нет участников';
-            
-            // Добавляем обработчики удаления
-            membersList.querySelectorAll('[data-remove]').forEach(btn => {
-                btn.onclick = () => {
-                    const removeId = parseInt(btn.dataset.remove);
-                    const updatedMembers = getDirectionChatMembers().filter(m => !(m.direction === currentDirection && m.userId === removeId));
-                    saveDirectionChatMembers(updatedMembers);
-                    loadMembers();
-                    showToast('Участник удалён из чата', 'success');
-                };
-            });
-        }
-
-        function loadMessages() {
-            const members = getDirectionChatMembers().filter(m => m.direction === currentDirection).map(m => m.userId);
-            members.push(user.id); // Лидер всегда видит свои сообщения
-            
-            const msgs = getMessages().filter(m => m.direction === currentDirection && members.includes(m.from)).sort((a,b) => new Date(a.date) - new Date(b.date));
-            msgBox.innerHTML = msgs.map(m => {
-                const u = getUsers().find(u => u.id === m.from);
-                return `<div class="msg"><strong>${escapeHTML(u?.fullName||u?.name||'—')}</strong>: <span class="msg-text">${escapeHTML(m.text)}</span><div style="font-size:0.7rem;color:var(--text-light);">${formatDate(m.date)}</div></div>`;
-            }).join('');
-            msgBox.scrollTop = msgBox.scrollHeight;
-        }
-
-        select.onchange = () => { currentDirection = select.value; loadMembers(); loadMessages(); };
-        
-        addBtn.onclick = () => {
-            const newUserId = parseInt(addUserSelect.value);
-            if (!newUserId) return;
-            const members = getDirectionChatMembers();
-            if (members.some(m => m.direction === currentDirection && m.userId === newUserId)) {
-                showToast('❌ Участник уже в чате', 'error');
-                return;
-            }
-            members.push({ id: genId(), direction: currentDirection, userId: newUserId, addedBy: user.id });
-            saveDirectionChatMembers(members);
-            loadMembers();
-            showToast('✅ Участник добавлен', 'success');
-        };
-        
-        sendBtn.onclick = () => {
-            if (!input.value.trim()) return;
-            const msgs = getMessages();
-            msgs.push({ id: genId(), from: user.id, direction: currentDirection, text: input.value.trim(), date: new Date().toISOString() });
-            saveMessages(msgs);
-            input.value = '';
-            loadMessages();
-        };
-        
-        loadMembers();
-        loadMessages();
-    }
+    function renderDirectionChatTab() { const user = getUsers().find(u => u.id === getSession().userId); const allUsers = getUsers().filter(u => u.role === 'user' && u.id !== user.id); return `<div class="card"><h3>💬 Чат направления</h3><div class="form-row"><select id="dirChatSelect">${user.leaderDirections.map(d => `<option>${d}</option>`).join('')}</select><select id="dirChatAddUser"><option value="">—</option>${allUsers.map(u => `<option value="${u.id}">${u.fullName||u.name}</option>`).join('')}</select><button class="btn btn-success btn-sm" id="addToDirChatBtn">➕</button></div><div id="dirChatMembersList" style="margin-bottom:8px;"></div><div class="messages-box" id="dirMessagesBox" style="height:200px;"></div><div style="display:flex;gap:8px;"><input id="dirChatInput" placeholder="Сообщение..." style="flex:1;"><button class="btn btn-primary" id="sendDirChatBtn">➤</button></div></div>`; }
+    function bindDirectionChatEvents() { const user = getUsers().find(u => u.id === getSession().userId); let currentDirection = user.leaderDirections[0]; const msgBox = document.getElementById('dirMessagesBox'); function loadMessages() { const members = getDirectionChatMembers().filter(m => m.direction === currentDirection).map(m => m.userId); members.push(user.id); msgBox.innerHTML = getMessages().filter(m => m.direction === currentDirection && members.includes(m.from)).sort((a,b)=>new Date(a.date)-new Date(b.date)).map(m => `<div><strong>${escapeHTML(getUsers().find(u=>u.id===m.from)?.fullName||'')}</strong>: ${escapeHTML(m.text)}</div>`).join(''); } document.getElementById('dirChatSelect').onchange = function() { currentDirection = this.value; loadMembers(); loadMessages(); }; function loadMembers() { const members = getDirectionChatMembers().filter(m => m.direction === currentDirection); document.getElementById('dirChatMembersList').innerHTML = members.map(m => `<span style="background:var(--bg);padding:2px 8px;border-radius:10px;margin:2px;display:inline-block;">${escapeHTML(getUsers().find(u=>u.id===m.userId)?.fullName||'')} <button data-remove="${m.userId}" style="background:none;border:none;cursor:pointer;">×</button></span>`).join(''); document.querySelectorAll('[data-remove]').forEach(b => b.onclick = () => { saveDirectionChatMembers(getDirectionChatMembers().filter(m => !(m.direction === currentDirection && m.userId === parseInt(b.dataset.remove)))); loadMembers(); }); } document.getElementById('addToDirChatBtn').onclick = () => { const id = parseInt(document.getElementById('dirChatAddUser').value); if (!id) return; const members = getDirectionChatMembers(); if (!members.some(m => m.direction === currentDirection && m.userId === id)) { members.push({ id: genId(), direction: currentDirection, userId: id }); saveDirectionChatMembers(members); loadMembers(); } }; document.getElementById('sendDirChatBtn').onclick = () => { const text = document.getElementById('dirChatInput').value.trim(); if (!text) return; const msgs = getMessages(); msgs.push({ id: genId(), from: user.id, direction: currentDirection, text, date: new Date().toISOString() }); saveMessages(msgs); document.getElementById('dirChatInput').value = ''; loadMessages(); }; loadMembers(); loadMessages(); }
 
     // ====== ПРОФИЛЬ ======
-    function renderProfileTab() {
-        const user = getUsers().find(u => u.id === getSession().userId);
-        const myPosts = (user.posts || []).sort((a,b) => new Date(b.date) - new Date(a.date));
-        return `
-        <div class="card">
-            <h3>👤 Мой профиль</h3>
-            ${user.photoURL ? `<img src="${escapeHTML(user.photoURL)}" style="max-width:150px; border-radius:50%;">` : ''}
-            <form id="profileForm" class="form-row">
-                <div class="form-group"><label>Логин</label><input id="profLogin" value="${escapeHTML(user.login)}" required></div>
-                <div class="form-group"><label>Новый пароль</label><input type="password" id="profPassword"></div>
-                <div class="form-group"><label>ФИО</label><input id="profFullName" value="${escapeHTML(user.fullName||'')}"></div>
-                <div class="form-group"><label>Email</label><input type="email" id="profEmail" value="${escapeHTML(user.email||'')}"></div>
-                <div class="form-group"><label>Фото (URL)</label><input id="profPhotoURL" value="${escapeHTML(user.photoURL||'')}"></div>
-                <div class="form-group"><label>Telegram</label><input id="profTg" value="${escapeHTML(user.socialLinks?.tg||'')}"></div>
-                <div class="form-group"><label>VK</label><input id="profVk" value="${escapeHTML(user.socialLinks?.vk||'')}"></div>
-                <div class="form-group"><label>Макс</label><input id="profMax" value="${escapeHTML(user.socialLinks?.max||'')}"></div>
-                <div class="form-group"><label>Округ</label><select id="profDistrict"><option>—</option>${DISTRICTS.map(d=>`<option ${user.district===d?'selected':''}>${d}</option>`).join('')}</select></div>
-                <div class="form-group"><label>Дата вступления</label><input type="date" id="profJoinDate" value="${user.joinDate||''}"></div>
-                <button class="btn btn-primary" type="submit">💾 Сохранить</button>
-            </form>
-        </div>
-        <div class="card">
-            <h4>📝 Мои посты</h4>
-            <form id="postForm" class="form-row">
-                <textarea id="postText" placeholder="Текст поста" required></textarea>
-                <input id="postImages" placeholder="URL фото через запятую">
-                <button class="btn btn-primary">Опубликовать</button>
-            </form>
-            ${myPosts.map(p => `
-                <div class="post-card">
-                    <p>${escapeHTML(p.text)}</p>
-                    ${(p.images || '').split(/[,;]+/).map(url => url.trim() && `<img src="${escapeHTML(url.trim())}" class="gallery-img">`).join('')}
-                    <small>${formatDate(p.date)}</small>
-                    <button class="btn btn-sm" onclick="window._deletePost('${p.id}')">🗑</button>
-                </div>`).join('')}
-        </div>`;
-    }
+    function renderProfileTab() { const user = getUsers().find(u => u.id === getSession().userId); return `<div class="card"><h3>👤 Профиль</h3>${user.photoURL ? `<img src="${escapeHTML(user.photoURL)}" style="max-width:120px;border-radius:50%;margin-bottom:12px;">` : ''}<form id="profileForm" class="form-row"><input id="profLogin" value="${escapeHTML(user.login)}" required placeholder="Логин"><input type="password" id="profPassword" placeholder="Новый пароль"><input id="profFullName" value="${escapeHTML(user.fullName||'')}" placeholder="ФИО"><input id="profEmail" value="${escapeHTML(user.email||'')}" placeholder="Email"><input id="profTg" value="${escapeHTML(user.socialLinks?.tg||'')}" placeholder="Telegram"><input id="profVk" value="${escapeHTML(user.socialLinks?.vk||'')}" placeholder="VK"><select id="profDistrict"><option>—</option>${DISTRICTS.map(d=>`<option ${user.district===d?'selected':''}>${d}</option>`).join('')}</select><button class="btn btn-primary" type="submit">💾 Сохранить</button></form><form id="postForm" class="form-row"><textarea id="postText" placeholder="Новый пост" required></textarea><button class="btn btn-primary">Опубликовать</button></form>${(user.posts||[]).map(p => `<div class="post-card"><p>${escapeHTML(p.text)}</p><small style="color:var(--text-lighter);">${formatDate(p.date)}</small><button class="btn btn-danger btn-sm" onclick="window._deletePost('${p.id}')">🗑</button></div>`).join('')}</div>`; }
+    window._deletePost = function(id) { const users = getUsers(); const u = users.find(u => u.id === getSession().userId); u.posts = u.posts.filter(p => p.id !== id); saveUsers(users); renderDashboard(); };
+    function bindProfileEvents() { document.getElementById('profileForm')?.addEventListener('submit', e => { e.preventDefault(); const users = getUsers(); const u = users.find(u => u.id === getSession().userId); u.login = document.getElementById('profLogin').value; if (document.getElementById('profPassword').value) u.password = document.getElementById('profPassword').value; u.fullName = document.getElementById('profFullName').value; u.email = document.getElementById('profEmail').value; u.socialLinks = { tg: document.getElementById('profTg').value, vk: document.getElementById('profVk').value, max: '' }; u.district = document.getElementById('profDistrict').value; saveUsers(users); renderDashboard(); }); document.getElementById('postForm')?.addEventListener('submit', e => { e.preventDefault(); const users = getUsers(); const u = users.find(u => u.id === getSession().userId); if (!u.posts) u.posts = []; u.posts.push({ id: genId(), text: document.getElementById('postText').value, date: new Date().toISOString() }); saveUsers(users); renderDashboard(); }); }
 
-    window._deletePost = function(id) {
-        const users = getUsers();
-        const u = users.find(u => u.id === getSession().userId);
-        u.posts = u.posts.filter(p => p.id !== id);
-        saveUsers(users);
-        renderDashboard();
-    };
+    function checkUnseenNotifications(userId) { const notifications = getNotifications().filter(n => !n.seenBy.includes(userId)); if (notifications.length) { const overlay = document.createElement('div'); overlay.className = 'modal-overlay'; overlay.innerHTML = `<div class="modal-content"><p>${notifications.map(n=>n.message).join('<br>')}</p><button class="btn btn-primary" id="closeNotif">ОК</button></div>`; document.body.appendChild(overlay); overlay.querySelector('#closeNotif').onclick = () => { notifications.forEach(n => n.seenBy.push(userId)); saveNotifications(getNotifications()); overlay.remove(); }; } }
 
-    function bindProfileEvents() {
-        const profileForm = document.getElementById('profileForm');
-        if (profileForm) {
-            profileForm.onsubmit = e => {
-                e.preventDefault();
-                const users = getUsers();
-                const user = users.find(u => u.id === getSession().userId);
-                const newLogin = document.getElementById('profLogin').value.trim();
-                if (users.some(u => u.id !== user.id && u.login === newLogin)) {
-                    showToast('❌ Логин уже занят', 'error'); return;
-                }
-                user.login = newLogin;
-                if (document.getElementById('profPassword').value) user.password = document.getElementById('profPassword').value;
-                user.fullName = document.getElementById('profFullName').value.trim();
-                user.email = document.getElementById('profEmail').value.trim();
-                user.photoURL = document.getElementById('profPhotoURL').value.trim();
-                user.socialLinks = {
-                    tg: document.getElementById('profTg').value.trim(),
-                    vk: document.getElementById('profVk').value.trim(),
-                    max: document.getElementById('profMax').value.trim()
-                };
-                user.district = document.getElementById('profDistrict').value;
-                user.joinDate = document.getElementById('profJoinDate').value;
-                saveUsers(users);
-                showToast('✅ Профиль обновлён', 'success');
-                renderDashboard();
-            };
-        }
-        const postForm = document.getElementById('postForm');
-        if (postForm) {
-            postForm.onsubmit = e => {
-                e.preventDefault();
-                const users = getUsers();
-                const user = users.find(u => u.id === getSession().userId);
-                if (!user.posts) user.posts = [];
-                user.posts.push({
-                    id: genId(),
-                    text: document.getElementById('postText').value,
-                    images: document.getElementById('postImages').value,
-                    date: new Date().toISOString()
-                });
-                saveUsers(users);
-                showToast('✅ Пост добавлен', 'success');
-                renderDashboard();
-            };
-        }
-    }
+    function bindTabEvents(idx) { const tabText = document.querySelectorAll('.tab-btn')[idx]?.textContent || ''; if (tabText.includes('Чаты')) bindChatsEvents(); else if (tabText.includes('Новости')) bindNewsEvents(); else if (tabText.includes('Связь')) bindFeedbackEvents(); else if (tabText.includes('Медиа')) bindMediaEvents(); else if (tabText.includes('Оценки')) bindGradesEvents(); else if (tabText.includes('Задания')) bindTasksEvents(); else if (tabText.includes('Участники')) bindUsersEvents(); else if (tabText.includes('Округа')) bindDistrictsEvents(); else if (tabText.includes('Лидерство')) bindLeaderEvents(); else if (tabText.includes('Чат направления')) bindDirectionChatEvents(); else if (tabText.includes('Профиль')) bindProfileEvents(); }
 
-    // ====== СООБЩЕНИЯ ======
-    function renderMessagesTab() {
-        const users = getUsers().filter(u => u.id !== getSession().userId);
-        return `
-        <div class="sub-tabs" id="msgSubTabs">
-            <button class="sub-tab-btn active" data-subtab="chat">💬 Личные</button>
-            <button class="sub-tab-btn" data-subtab="announcements">📢 Объявления</button>
-        </div>
-        <div id="msgContent"></div>`;
-    }
-
-    function bindMessagesEvents() {
-        const session = getSession();
-        const currentUserId = session.userId;
-        const users = getUsers().filter(u => u.id !== currentUserId);
-        const subTabs = document.querySelectorAll('#msgSubTabs .sub-tab-btn');
-        const contentDiv = document.getElementById('msgContent');
-        let currentSub = 'chat';
-
-        function renderChat() {
-            contentDiv.innerHTML = `
-            <div class="chat-container">
-                <div class="user-list" id="chatUserList">
-                    ${users.map(u => `<div class="user-list-item" data-uid="${u.id}">${escapeHTML(u.fullName||u.name)}</div>`).join('')}
-                </div>
-                <div class="chat-area" id="chatArea">
-                    <div class="messages-box" id="messagesBox"></div>
-                    <div class="form-row" style="margin:0;">
-                        <input id="chatInput" placeholder="Сообщение..." style="flex:1;">
-                        <button class="btn btn-primary" id="sendChatBtn">➤</button>
-                    </div>
-                </div>
-            </div>`;
-            let selectedUserId = null;
-            const msgBox = document.getElementById('messagesBox');
-            const chatInput = document.getElementById('chatInput');
-            const sendBtn = document.getElementById('sendChatBtn');
-
-            function loadMessages() {
-                if (!selectedUserId) { msgBox.innerHTML = '<div style="color:var(--text-light);">Выберите собеседника</div>'; return; }
-                const msgs = getMessages().filter(m =>
-                    (m.from === currentUserId && m.to === selectedUserId) ||
-                    (m.from === selectedUserId && m.to === currentUserId)
-                ).sort((a,b) => new Date(a.date) - new Date(b.date));
-                msgBox.innerHTML = msgs.map(m => {
-                    const isMine = m.from === currentUserId;
-                    return `<div class="msg ${isMine ? 'mine' : ''}"><div class="msg-text">${escapeHTML(m.text)}</div><div style="font-size:0.7rem;color:var(--text-light);">${formatDate(m.date)}</div></div>`;
-                }).join('');
-                msgBox.scrollTop = msgBox.scrollHeight;
-            }
-
-            document.getElementById('chatUserList').addEventListener('click', e => {
-                const item = e.target.closest('.user-list-item');
-                if (!item) return;
-                selectedUserId = parseInt(item.dataset.uid);
-                document.querySelectorAll('.user-list-item').forEach(el => el.style.background = '');
-                item.style.background = 'var(--bg)';
-                loadMessages();
-            });
-
-            sendBtn.onclick = () => {
-                if (!selectedUserId || !chatInput.value.trim()) return;
-                const msgs = getMessages();
-                msgs.push({ id: genId(), from: currentUserId, to: selectedUserId, text: chatInput.value.trim(), date: new Date().toISOString() });
-                saveMessages(msgs);
-                chatInput.value = '';
-                loadMessages();
-            };
-        }
-
-        function renderAnnouncements() {
-            const announcements = getAnnouncements().sort((a,b) => new Date(b.date) - new Date(a.date));
-            let formHtml = '';
-            if (session.role === 'admin') {
-                formHtml = `
-                <div class="card"><form id="announcementForm" class="form-row">
-                    <div class="form-group"><label>Тема</label><input id="annSubject" required></div>
-                    <div class="form-group"><label>Сообщение</label><textarea id="annMessage" required></textarea></div>
-                    <button class="btn btn-primary" type="submit">📢 Опубликовать рассылку</button>
-                </form></div>`;
-            }
-            contentDiv.innerHTML = formHtml + announcements.map(a => `
-                <div class="card">
-                    <strong>${escapeHTML(a.subject)}</strong>
-                    <p>${escapeHTML(a.message)}</p>
-                    <small>${formatDate(a.date)}</small>
-                </div>`).join('') || '<div class="empty-state">Нет объявлений</div>';
-            const annForm = document.getElementById('announcementForm');
-            if (annForm) {
-                annForm.onsubmit = e => {
-                    e.preventDefault();
-                    const anns = getAnnouncements();
-                    anns.push({
-                        id: genId(),
-                        subject: document.getElementById('annSubject').value,
-                        message: document.getElementById('annMessage').value,
-                        from: currentUserId,
-                        date: new Date().toISOString()
-                    });
-                    saveAnnouncements(anns);
-                    showToast('📢 Рассылка опубликована', 'success');
-                    renderDashboard();
-                };
-            }
-        }
-
-        subTabs.forEach(btn => {
-            btn.addEventListener('click', function() {
-                subTabs.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentSub = this.dataset.subtab;
-                if (currentSub === 'chat') renderChat();
-                else renderAnnouncements();
-            });
-        });
-        renderChat();
-    }
-
-    function checkUnseenNotifications(userId) {
-        const notifications = getNotifications().filter(n => !n.seenBy.includes(userId) && (!n.targetUserId || n.targetUserId == userId));
-        if (notifications.length) {
-            const msg = notifications.map(n => n.message).join('\n');
-            const overlay = document.createElement('div'); overlay.className = 'modal-overlay';
-            overlay.innerHTML = `<div class="modal-content"><h3>📢 Новое задание</h3><p>${escapeHTML(msg)}</p><button class="btn btn-primary" id="closeNotif">ОК</button></div>`;
-            document.body.appendChild(overlay);
-            overlay.querySelector('#closeNotif').onclick = () => {
-                notifications.forEach(n => n.seenBy.push(userId));
-                saveNotifications(getNotifications().map(n => notifications.includes(n) ? {...n} : n));
-                overlay.remove();
-            };
-            overlay.onclick = e => { if(e.target === overlay) overlay.remove(); };
-        }
-    }
-
-    function bindTabEvents(idx) {
-        const tabText = document.querySelectorAll('.tab-btn')[idx]?.textContent || '';
-        if (tabText.includes('Оценки')) bindGradesEvents();
-        else if (tabText.includes('Новости')) bindNewsEvents();
-        else if (tabText.includes('Задания')) bindTasksEvents();
-        else if (tabText.includes('Обратная связь')) bindFeedbackEvents();
-        else if (tabText.includes('Пользователи')) bindUsersEvents();
-        else if (tabText.includes('Округа')) bindDistrictsEvents();
-        else if (tabText.includes('Лидерство')) bindLeaderEvents();
-        else if (tabText.includes('Чат направления')) bindDirectionChatEvents();
-        else if (tabText.includes('Профиль')) bindProfileEvents();
-        else if (tabText.includes('Сообщения')) bindMessagesEvents();
-    }
-
-    window._logout = () => { saveSession(null); renderLogin(); showToast('👋 Вы вышли'); };
+    window._logout = () => { saveSession(null); renderLogin(); };
     window._openSettingsModal = () => openSettingsModal();
-
+    
     function openSettingsModal() {
-        const s = getSettings(); const session = getSession();
-        const modal = document.createElement('div'); modal.className = 'modal-overlay';
+        const s = getSettings();
+        const session = getSession();
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        
+        let headerImageField = '';
+        if (session?.role === 'admin') {
+            headerImageField = `<div class="form-group"><label>URL логотипа (только для админов)</label><input id="headerImageUrl" value="${escapeHTML(s.headerImage||'')}" placeholder="https://..."></div>`;
+        }
+        
         let adminButtons = '';
         if (session?.role === 'admin') {
-            adminButtons = `
-                <div style="margin:20px 0;">
-                    <button class="btn btn-primary" id="exportBtn">📥 Экспорт JSON</button>
-                    <input type="file" id="importFile" accept=".json" style="display:none;">
-                    <button class="btn btn-primary" id="importBtn">📤 Импорт JSON</button>
-                    <button class="btn btn-primary" id="exportExcelBtn">📊 Экспорт Excel</button>
-                    <button class="btn btn-success" id="addMissingBtn">➕ Добавить недостающих (до 150)</button>
-                </div>`;
+            adminButtons = `<div style="margin-top:12px;"><button class="btn btn-success" id="addMissingBtn">➕ Добавить до 150</button></div>`;
         }
+        
         modal.innerHTML = `
             <div class="modal-content">
                 <h3>⚙️ Настройки</h3>
-                <div style="margin:20px 0;"><label>Тема:</label><div style="display:flex;gap:10px;margin-top:8px;"><div class="theme-option" data-theme="light" style="padding:10px 20px;border-radius:20px;background:${s.theme==='light'?'var(--primary)':'var(--bg)'};">Светлая</div><div class="theme-option" data-theme="dark" style="padding:10px 20px;border-radius:20px;background:${s.theme==='dark'?'var(--primary)':'var(--bg)'};">Тёмная</div></div></div>
-                <div style="margin:20px 0;"><label>Цвет:</label><div style="display:flex;gap:10px;margin-top:8px;"><div class="color-option" data-color="red" style="width:40px;height:40px;border-radius:50%;background:#D4002A;"></div><div class="color-option" data-color="blue" style="width:40px;height:40px;border-radius:50%;background:#0039A6;"></div><div class="color-option" data-color="white" style="width:40px;height:40px;border-radius:50%;background:#FFF;"></div></div></div>
+                ${headerImageField}
+                <div style="margin:16px 0;">
+                    <label>Тема</label>
+                    <div style="display:flex;gap:8px;margin-top:8px;">
+                        <button class="btn btn-sm theme-option" data-theme="light" style="background:${s.theme==='light'?'var(--primary)':'var(--bg)'};">☀️ Светлая</button>
+                        <button class="btn btn-sm theme-option" data-theme="dark" style="background:${s.theme==='dark'?'var(--primary)':'var(--bg)'};">🌙 Тёмная</button>
+                    </div>
+                </div>
                 ${adminButtons}
                 <button class="btn btn-primary" onclick="this.closest('.modal-overlay').remove()">Закрыть</button>
             </div>`;
+        
         document.body.appendChild(modal);
-        modal.querySelectorAll('.theme-option').forEach(b => b.onclick = () => { s.theme = b.dataset.theme; saveSettings(s); applySettings(s); modal.remove(); renderDashboard(); });
-        modal.querySelectorAll('.color-option').forEach(c => c.onclick = () => { s.primaryColor = c.dataset.color; saveSettings(s); applySettings(s); modal.remove(); renderDashboard(); });
+        
+        modal.querySelectorAll('.theme-option').forEach(b => b.onclick = () => {
+            s.theme = b.dataset.theme;
+            saveSettings(s);
+            applySettings(s);
+            modal.remove();
+            renderDashboard();
+        });
+        
         if (session?.role === 'admin') {
-            modal.querySelector('#exportBtn').onclick = () => {
-                const data = { users: getUsers(), grades: getGrades(), news: getNews(), tasks: getTasks(), taskCompletions: getTaskCompletions(), feedback: getFeedback(), disputes: getDisputes(), notifications: getNotifications(), settings: getSettings(), messages: getMessages(), announcements: getAnnouncements(), districts: DISTRICTS, directionChatMembers: getDirectionChatMembers() };
-                const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-                const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'backup_' + new Date().toISOString().slice(0,10) + '.json'; a.click();
-                showToast('📥 Резервная копия сохранена', 'success');
-            };
-            modal.querySelector('#importBtn').onclick = () => modal.querySelector('#importFile').click();
-            modal.querySelector('#importFile').onchange = (e) => {
-                if(e.target.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = async function(ev) {
-                        try {
-                            const data = JSON.parse(ev.target.result);
-                            for (let key of Object.keys(data)) {
-                                if (key === 'districts') { DISTRICTS = data.districts; await saveCache('districts', DISTRICTS); }
-                                else if (key === 'directionChatMembers') { await saveDirectionChatMembers(data.directionChatMembers); }
-                                else if (cache[key] !== undefined) await saveCache(key, data[key]);
-                            }
-                            applySettings(getSettings());
-                            showToast('📤 Данные восстановлены', 'success'); location.reload();
-                        } catch(e) { showToast('❌ Ошибка импорта', 'error'); }
-                    };
-                    reader.readAsText(e.target.files[0]);
-                }
-                modal.remove();
-            };
-            modal.querySelector('#exportExcelBtn').onclick = () => {
-                const grades = getGrades(); const users = getUsers();
-                let html = '<html><head><meta charset="UTF-8"></head><body><table border="1"><tr><th>Дата</th><th>Участник</th><th>Округ</th><th>Категория</th><th>Направление</th><th>Оценка</th><th>Описание</th></tr>';
-                grades.forEach(g => { const u = users.find(u => u.id === g.userId); html += `<tr><td>${formatDate(g.date)}</td><td>${u?.fullName||u?.name||''}</td><td>${u?.district||''}</td><td>${g.category||''}</td><td>${g.direction||''}</td><td>${g.grade}</td><td>${g.description||''}</td></tr>`; });
-                html += '</table></body></html>'; const blob = new Blob([html], {type: 'application/vnd.ms-excel'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'grades_export.xls'; a.click(); showToast('📊 Оценки экспортированы в Excel', 'success');
+            modal.querySelector('#headerImageUrl').onchange = function() {
+                s.headerImage = this.value.trim();
+                saveSettings(s);
             };
             modal.querySelector('#addMissingBtn').onclick = () => {
                 modal.remove();
-                addMissingUsers().then(result => {
-                    if (result.addedAdmins > 0 || result.addedUsers > 0) {
-                        setTimeout(() => location.reload(), 1500);
-                    }
+                addMissingUsers().then(r => {
+                    if (r.addedAdmins > 0 || r.addedUsers > 0) setTimeout(() => location.reload(), 1500);
                 });
             };
         }
+        
         modal.onclick = e => { if(e.target === modal) modal.remove(); };
     }
 
-    async function init() {
-        await initializeData();
-        applySettings(getSettings());
-        const session = getSession();
-        if (session && getUsers().find(u => u.id === session.userId)) renderDashboard();
-        else renderLogin();
-    }
+    async function init() { await initializeData(); applySettings(getSettings()); const session = getSession(); if (session && getUsers().find(u => u.id === session.userId)) renderDashboard(); else renderLogin(); }
     init();
 </script>
 </body>
